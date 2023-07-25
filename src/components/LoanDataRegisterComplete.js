@@ -130,6 +130,8 @@ function LoanDataRegisterComplete() {
           <button type="button" className="btn btn-secondary volver" >Cancelar</button>
         </Link>
 
+        <label>Seleccione el libro deseado</label>
+
       {Array(count).fill(null).map((_, index) =>
         <div key={index}>
           <select
