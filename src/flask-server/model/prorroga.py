@@ -18,7 +18,6 @@ class Prorroga(DataBase):
         return False
 
     def getProrroga(self):
-        
         data = ""
         sql = "SELECT prorroga_id, fecha_inicio, fecha_termino, prestamo_id FROM `prorroga`;"
         try:
