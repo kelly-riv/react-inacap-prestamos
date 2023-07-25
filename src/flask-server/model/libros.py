@@ -9,7 +9,7 @@ class Libro(DataBase):
         self.autor=autor
         self.editorial=editorial
         self.anio=anio
-        self.id_prestamo=id_prestamo 
+        self.id_prestamo=id_prestamo
     
     def getListaLibros(self):
         data = ""

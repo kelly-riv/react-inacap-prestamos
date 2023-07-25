@@ -51,9 +51,13 @@ def insertar_prestamo():
     id_libros = data.get('selectedBooks')
     if str(id_libros) == "[]":
         return jsonify({'message': 'Error al realizar el prestamo, no se seleccionaron libros'})
+    libros_previos = prestamo.getLibrosEnPrestamo(id_libros[0][0],id_User)
+    print(libros_previos)
+    if libros_previos is not None:
+        return jsonify({'message': 'Error al realizar el prestamo, este usuario ya posee este libro en préstamo'})
 
     if tipo_usuario == 0:
-        if prestamo.getCantidadPrestamos(id_User) >4:
+        if prestamo.getCantidadPrestamos(id_User) >=4:
             print("Fail")
             return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede tener más de 4 libros'})
         if time_difference.days>7:
