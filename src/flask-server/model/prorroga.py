@@ -3,19 +3,31 @@ from datetime import date
 
 class Prorroga(DataBase):
        
-    #funciones a traves de consultas
-    def newProrroga(self,fechaInicio, fechaTermino, prestamo_id):
- 
-        sql="INSERT INTO `prorroga`( `fecha_inicio`, `fecha_termino`, `pretamo_id`) VALUES ('{}', '{}', {})".format(fechaInicio, fechaTermino, prestamo_id)
+    def newProrroga(self,fechaInicio, fechaTermino, libros_prestamo_id, user_id, is_docente):
 
+        self.cursor.execute(f"SELECT n_prorroga FROM prestamo_libros WHERE id_prestamo_libros = {libros_prestamo_id}")
+        n_prorroga = self.cursor.fetchone()[0]
+
+        if not is_docente and n_prorroga >= 1:
+            print("Error: Ya ha solicitado una prórroga.")
+            return False
+
+        if is_docente and n_prorroga >= 3:
+            print("Error: Ha alcanzado el límite de prórrogas consecutivas.")
+            return False
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `detalle_id`) VALUES ('{fechaInicio}', '{fechaTermino}', '{prestamo_id}')")
+
+            self.cursor.execute(f"UPDATE `prestamo_libros` SET `n_prorroga` = `n_prorroga` + 1 WHERE `id_prestamo_libros` = '{libros_prestamo_id}'")
+
             self.connection.commit()
             return True
         except Exception as e:
             print("Error : "+str(e.args))
             self.connection.close()
+
         return False
+
 
     def getProrroga(self):
         data = ""
