@@ -5,14 +5,17 @@ import { Link } from 'react-router-dom';
 function Prorroga(props) {
     //MODAL
     const [show, setShow] = useState(false);
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    //LIBROS
+
     const [libros, setLibros] = useState([]);
     
     const tableStyle = {
         marginTop: '2%'
     }
+
     const obtenerLibros = () => {
         fetch('http://localhost:3001/obtener_libros', {
         method: 'GET',
@@ -30,14 +33,18 @@ function Prorroga(props) {
         .catch((error) => console.error('Error al obtener los préstamos:', error));
     };
 
-    //INSERTAR PRORROGA
-
-    const insertarProrroga = () => {
-      fetch('http://localhost:3001/obtener_libros', {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json',
-      },
+    const insertarProrroga = (libro) => {
+      fetch('http://localhost:3001/insertar_prorroga', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            startDate: startDate,
+            endDate: endDate,
+            id_libro: libro.id_libro,
+            id_prestamo: libro.id_prestamo
+        }),
       })
       .then((response) => {
           if (!response.ok) {
@@ -45,19 +52,15 @@ function Prorroga(props) {
           }
           return response.json();
       })
-      .then((data) => setLibros(data))
-      .catch((error) => console.error('Error al obtener los préstamos:', error));
+      .then((data) => console.log(data))
+      .catch((error) => console.error('Error al insertar la prórroga:', error));
   };
 
     useEffect(() => {
         obtenerLibros(); 
     }, []);
 
-    //INSERTAR PRORROGA
-    
-    
-
-  return (
+    return (
     <div>
         <Link to={'/'}>
             <Button variant='secondary' className='volver'>
@@ -77,13 +80,13 @@ function Prorroga(props) {
               </tr>
             </thead>
             <tbody>
-              {libros.map((libro) => ( // Cambié libros por libro
+              {libros.map((libro) => ( 
                 <tr key={libro.isbn}>
                   <td>{libro.id_libro}</td>
                   <td>{libro.id_prestamo}</td>
                   <td>{libro.titulo}</td>
                   <td>
-                    <Button variant="danger" onClick={handleShow}>Extender Plazo</Button>
+                    <Button variant="danger" onClick={() => {handleShow(); insertarProrroga(libro)}}>Extender Plazo</Button>
                   </td>
                 </tr>
               ))}
@@ -98,12 +101,12 @@ function Prorroga(props) {
                 <Form>
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>Ingresa fecha de inicio de prorroga.</Form.Label>
-                        <Form.Control type="date" placeholder="name@example.com" />
+                        <Form.Control type="date" placeholder="name@example.com" onChange={event => setStartDate(event.target.value)}/>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                         <Form.Label>Ingresa fecha de termino de prorroga.</Form.Label>
-                        <Form.Control type="date" placeholder="name@example.com"/>
+                        <Form.Control type="date" placeholder="name@example.com" onChange={event => setEndDate(event.target.value)}/>
                     </Form.Group>
                 </Form>
             </Modal.Body>
