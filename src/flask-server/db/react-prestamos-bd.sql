@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-07-2023 a las 17:13:37
+-- Tiempo de generación: 25-07-2023 a las 17:48:58
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -72,13 +72,13 @@ INSERT INTO `libro` (`id_libro`, `ISBN`, `titulo`, `autor`, `editorial`, `anio_p
 (6, '978-956-09719-3-7', 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', 2022, 1, 0),
 (7, '978-956-14-3003-7', 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', 2022, 1, 0),
 (8, '978-956-09719-3-7', 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', 2022, 1, 0),
-(9, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 0, 0),
+(9, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 1, 0),
 (10, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 1, 0),
 (11, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 1, 0),
 (12, '978-956-00-1555-6', 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', 2007, 1, 0),
 (13, '978-956-00-1555-6', 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', 2007, 1, 0),
 (14, '978-956-00-1555-6', 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', 2007, 1, 0),
-(15, '978-956-00-1536-5', 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', 2007, 1, 0),
+(15, '978-956-00-1536-5', 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', 2007, 1, 1),
 (16, '978-956-00-1536-5', 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', 2007, 1, 0),
 (17, '978-956-8234-14-0', 'Refranes y + con alma', 'Gómez Alfonso, María del Rosario', 'Editorial Por Un Mundo Mejor Ltda.', 2007, 1, 0);
 
@@ -133,23 +133,24 @@ CREATE TABLE `prorroga` (
 
 CREATE TABLE `stock` (
   `ISBN` varchar(60) NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `cantidad` int(11) NOT NULL,
+  `disponibles` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `stock`
 --
 
-INSERT INTO `stock` (`ISBN`, `cantidad`) VALUES
-('978-956-00-1536-5', 2),
-('978-956-00-1555-6', 3),
-('978-956-09719-3-7', 2),
-('978-956-09719-5-1', 1),
-('978-956-14-3003-7', 2),
-('978-956-6211-02-0', 3),
-('978-956-8234-14-0', 1),
-('978-956-9455-51-3', 1),
-('978-956-9455-52-0', 1);
+INSERT INTO `stock` (`ISBN`, `cantidad`, `disponibles`) VALUES
+('978-956-00-1536-5', 2, 1),
+('978-956-00-1555-6', 3, 1),
+('978-956-09719-3-7', 2, 1),
+('978-956-09719-5-1', 1, 1),
+('978-956-14-3003-7', 2, 1),
+('978-956-6211-02-0', 3, 1),
+('978-956-8234-14-0', 1, 1),
+('978-956-9455-51-3', 1, 1),
+('978-956-9455-52-0', 1, 1);
 
 -- --------------------------------------------------------
 

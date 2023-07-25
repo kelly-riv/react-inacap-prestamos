@@ -34,7 +34,7 @@ def obtener_prestamos():
 def obtener_stock_libros():
     stock = Stock()
     lista_libros_stock = stock.getDisponibilidad()
-    stock_json = [{'isbn':s.ISBN,'titulo':s.titulo,'cantidad':s.cantidad}for s in lista_libros_stock]
+    stock_json = [{'isbn':s.ISBN,'titulo':s.titulo,'cantidad':s.cantidad,'cantidadReal':s.cantidadReal}for s in lista_libros_stock]
     return jsonify(stock_json)
 
 @app.route('/insertar_prestamos', methods=['POST'])
@@ -145,8 +145,11 @@ def dar_baja_libro():
     cantidad_baja = data.get('cantidadBaja')
     
     try:
-        stock.darBajaLibro(isbn, cantidad_baja)
-        return jsonify({'message': 'Se ha dado de baja el libro correctamente'})
+        if stock.darBajaLibro(isbn, cantidad_baja):
+            return jsonify({'message': 'Se ha dado de baja el libro correctamente'})
+        else:
+            return jsonify({'message': 'Ha ocurrido un error'})
+
     except Exception as e:
         app.logger.error(f"Error al dar de baja el libro: {str(e)}")
         return jsonify({'message': 'Error al dar de baja el libro', 'error': str(e)})

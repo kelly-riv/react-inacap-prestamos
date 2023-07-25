@@ -3,11 +3,12 @@ from .base import DataBase
 
 class Stock(DataBase):
     
-    def __init__(self, libro="", ISBN="", cantidad=0) -> None:
+    def __init__(self, libro="", ISBN="", cantidad=0,cantidadReal=0) -> None:
         super().__init__()
         self.titulo = libro
         self.ISBN = ISBN
         self.cantidad = cantidad
+        self.cantidadReal = cantidadReal
     
     # Getters    
 
@@ -46,13 +47,13 @@ class Stock(DataBase):
     def getDisponibilidad(self):
         self.updateCantidades()
         data = ""
-        sql = "SELECT DISTINCT stock.ISBN, stock.cantidad, libro.titulo FROM `stock` LEFT JOIN libro ON stock.ISBN = libro.ISBN;"
+        sql = "SELECT DISTINCT stock.ISBN, stock.cantidad, libro.titulo, stock.disponibles FROM `stock` LEFT JOIN libro ON stock.ISBN = libro.ISBN;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
             stock = []
             for value in data:
-                libro = Stock(value[2],value[0],value[1])
+                libro = Stock(value[2],value[0],value[1],value[3])
                 stock.append(libro)
             return stock
         except Exception as e:
@@ -114,7 +115,7 @@ class Stock(DataBase):
             return False
     
     def darBajaLibro(self, isbn, cantidad_baja):
-        sql = f'UPDATE libro SET condicion = 0 WHERE ISBN = "{isbn}" LIMIT {cantidad_baja};'
+        sql = f'UPDATE libro SET condicion = 1 WHERE ISBN = "{isbn}" LIMIT {cantidad_baja};'
         try:
             self.cursor.execute(sql)
             self.connection.commit()
