@@ -57,6 +57,9 @@ def insertar_prestamo():
     print(libros_previos)
     if libros_previos is not None:
         return jsonify({'message': 'Error al realizar el prestamo, este usuario ya posee este libro en préstamo'})
+    multas = prestamo.getMultasUser(id_User)
+    if multas is not None:
+        return jsonify({'message': 'Error al realizar el prestamo, este usuario tiene deudas en el sistema'})
 
     if tipo_usuario == 0:
         if prestamo.getCantidadPrestamos(id_User) >=4:
@@ -82,6 +85,7 @@ def insertar_prestamo():
             print("No disponible")
             prestamo.setNoDisponible(libro_id)
             if agregar_prestamo:
+                prestamo.getMultas()
                 return jsonify({'message': 'Prestamo realizado correctamente'})
     return jsonify({'message': 'Error al realizar el prestamo'})
 
