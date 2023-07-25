@@ -38,6 +38,7 @@ def obtener_stock_libros():
 
 @app.route('/insertar_prestamos', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+
 def insertar_prestamo():
     data = request.get_json()
     fecha_inicio = data.get('startDate')
@@ -106,7 +107,7 @@ def obtener_tipo_usuario():
 def obtener_libros():
     libro = Libro()
     lista_libros = libro.getListaLibros()
-    libros_json = [{'id_libro': l.id, 'titulo': l.titulo} for l in lista_libros]
+    libros_json = [{'id_libro': l.id, 'titulo': l.titulo, 'id_prestamo': l.id_prestamo} for l in lista_libros]
     return jsonify(libros_json)
 
 @app.route('/obtener_multas',methods=['GET'])

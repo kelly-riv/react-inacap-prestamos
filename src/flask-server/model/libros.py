@@ -1,7 +1,7 @@
 from .base import DataBase
 
 class Libro(DataBase):
-    def __init__(self,id=0,isbn="",titulo="",autor="",editorial="",anio="") -> None:
+    def __init__(self, id=0, isbn="", titulo="", autor="", editorial="", anio="", id_prestamo=None) -> None:
         super().__init__()
         self.id=id
         self.isbn=isbn
@@ -9,16 +9,17 @@ class Libro(DataBase):
         self.autor=autor
         self.editorial=editorial
         self.anio=anio
+        self.id_prestamo=id_prestamo 
     
     def getListaLibros(self):
         data = ""
-        sql = "SELECT id_libro, ISBN, titulo, autor, editorial, anio_publicacion, FROM `libro` ORDER BY titulo ASC;"
+        sql = "SELECT L.id_libro, L.ISBN, L.titulo, L.autor, L.editorial, L.anio_publicacion, P.id_prestamo FROM libro AS L JOIN prestamo_libros AS PL ON L.id_libro = PL.id_libro JOIN prestamo AS P ON PL.id_prestamo = P.id_prestamo ORDER BY L.titulo ASC; "
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
             libros = []
             for value in data:
-                libro = Libro(value[0], value[1], value[2], value[3], value[4], value[5])
+                libro = Libro(value[0], value[1], value[2], value[3], value[4], value[5],value[6])
                 libros.append(libro)
             self.prestamos = libros
             return libros
