@@ -1,0 +1,67 @@
+.App {
+  text-align: center;
+  background-color: #403E3D;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+input[type="text"]::placeholder, input[type="password"]::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.carousel-item img {
+  border: 2px solid #ccc;
+  width: 50%;
+  height: 30%;
+}
+
+.btn {
+  margin: 10px;
+}
+.btn.btn-secondary.volver{
+  position: absolute;
+  top: 1%;
+  left: 1%;
+}
+
+.billete {
+  width: 25%;
+  float: left;
+  padding-left: 50px;
+  position: relative;
+}
+
+.moneda {
+  width: 125px;
+  height: 125px;
+  float: left;
+  left: 40%;
+  position: absolute;
+  
+}
+
+.moneyForm {
+  border-color: red;
+  border: 10px;
+  float: left;
+}
+
+.totalAmount {
+  position: absolute;
+  top: 30%;
+  right: 10%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.actionButtons{
+  margin-top: 5%;
+  padding-top: 5%;
+}
