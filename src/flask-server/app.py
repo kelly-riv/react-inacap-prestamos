@@ -76,7 +76,7 @@ def obtener_tipo_usuario():
 def obtener_libros():
     libro = Libro()
     lista_libros = libro.getListaLibros()
-    libros_json = [{'id_libro': l.getId(), 'titulo': l.getTitulo()} for l in lista_libros]
+    libros_json = [{'id_libro': l.id, 'titulo': l.titulo} for l in lista_libros]
     return jsonify(libros_json)
 
 @app.route('/obtener_multas',methods=['GET'])

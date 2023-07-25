@@ -1,6 +1,14 @@
 from .base import DataBase
 
 class Libro(DataBase):
+    def __init__(self,id=0,isbn="",titulo="",autor="",editorial="",anio="") -> None:
+        super().__init__()
+        self.id=id
+        self.isbn=isbn
+        self.titulo=titulo
+        self.autor=autor
+        self.editorial=editorial
+        self.anio=anio
     
     def getListaLibros(self):
         data = ""
