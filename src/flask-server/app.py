@@ -31,14 +31,6 @@ def obtener_prestamos():
     prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'id_user': p.id_user, 'id_encargado': p.id_encargado, 'multa_total': p.multa_total} for p in lista_prestamos]
     return jsonify(prestamos_json)
 
-@app.route('/obtener_stock', methods=['GET'])
-@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
-def obtener_stock_libros():
-    stock = Stock()
-    lista_libros_stock = stock.getDisponibilidad()
-    stock_json = [{'isbn':s.ISBN,'titulo':s.titulo,'cantidad':s.cantidad,'cantidadReal':s.cantidadReal}for s in lista_libros_stock]
-    return jsonify(stock_json)
-
 @app.route('/insertar_prestamos', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 
@@ -138,14 +130,16 @@ def registrar_pago():
         return jsonify({'message': 'Pago registrado correctamente'})
     else:
         return jsonify({'message': 'Error al registrar pago'})
+    
+#MANEJO DE STOCK
 
 @app.route('/dar_baja_libro', methods=['POST'])
-@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def dar_baja_libro():
     data = request.get_json()
     isbn = data.get('isbn')
     cantidad_baja = data.get('cantidadBaja')
-    
+
     try:
         if stock.darBajaLibro(isbn, cantidad_baja):
             return jsonify({'message': 'Se ha dado de baja el libro correctamente'})
@@ -156,6 +150,14 @@ def dar_baja_libro():
         app.logger.error(f"Error al dar de baja el libro: {str(e)}")
         return jsonify({'message': 'Error al dar de baja el libro', 'error': str(e)})
 
+@app.route('/obtener_stock', methods=['GET'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+def obtener_stock_libros():
+    lista_libros_stock = stock.getDisponibilidad()
+    stock_json = [{'isbn':s.ISBN,'titulo':s.titulo,'cantidad':s.cantidad,'cantidadReal':s.cantidadReal} for s in lista_libros_stock]
+    return jsonify(stock_json)
+
+######################
 
 @app.route('/generar_reporte_fecha', methods =['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
@@ -189,6 +191,8 @@ def entregar_libro():
             return jsonify({'message': 'Se ha devuleto correctamente'})
         else:
             return jsonify({'message': 'Ha ocurrido un error al devolder el libro'})
+
+#PRORROGA
         
 @app.route('/insertar_prorroga', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
@@ -206,69 +210,3 @@ def insertar_prorroga():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

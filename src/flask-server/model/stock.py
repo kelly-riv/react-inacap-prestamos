@@ -103,22 +103,26 @@ class Stock(DataBase):
     
     def updateCantidad(self):
         ISBN = self.ISBN
-        cantidad = self.cantidad
-        sql = "UPDATE `stock` SET `cantidad`={} WHERE `ISBN`='{}'".format(cantidad, ISBN)
+        sql = "SELECT COUNT(*) FROM libro WHERE ISBN='{}';".format(ISBN)
         try:
             self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            cantidad = result[0]
+            sql_update = "UPDATE `stock` SET `cantidad`={} WHERE `ISBN`='{}'".format(cantidad, ISBN)
+            self.cursor.execute(sql_update)
             self.connection.commit()
             return True
         except Exception as e:
             print("Error: " + str(e.args))
             self.connection.close()
             return False
-    
+
     def darBajaLibro(self, isbn, cantidad_baja):
         sql = f'UPDATE libro SET condicion = 1 WHERE ISBN = "{isbn}" LIMIT {cantidad_baja};'
         try:
             self.cursor.execute(sql)
             self.connection.commit()
+            self.updateCantidad()
             return True
         except Exception as e:
             print("Error: " + str(e.args))
