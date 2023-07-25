@@ -1,4 +1,6 @@
 from model.base import DataBase
+from datetime import datetime
+
 
 class Prestamo(DataBase):
     
@@ -150,12 +152,45 @@ class Prestamo(DataBase):
         
     def updateMultas(self):
         data = ""
-        sql = ""
+        sql = "SELECT id_prestamo, fecha_termino, CURRENT_DATE FROM `prestamo` WHERE fecha_termino<CURRENT_DATE AND entregado = 0 ;"
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            multas = []
+            for value in data:
+                prestamo = (value[0], value[1],value[2])
+                multas.append(prestamo)
+            self.setMultas(multas)
+            return multas
+        except Exception as e:
+            raise
+    
+    def setMultas(self,multas):
+        date_format = "%Y-%m-%d"
+
+        for multa in multas:
+            """ fecha_actual = datetime.strptime(multa[2],date_format)
+            fecha_termino = datetime.strptime(multa[1],date_format) """
+            dias = multa[2]-multa[1]
+            if dias.days>1:
+                multa_total = dias.days * 1000
+                self.updateMulta(multa[0],multa_total)
+
+    def updateMulta(self,id_multa,multa_total):
+        sql = f"UPDATE prestamo SET multa_total = {multa_total} WHERE id_prestamo = {id_multa}"
+        try:
+            self.cursor.execute(sql)
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print("Error: " + str(e.args))
+            self.connection.close()
+            return False
 
     def getMultas(self):
         data = ""
         self.updateMultas()
-        sql = "SELECT prestamo.id_prestamo, prestamo.multa_total, usuario.rut FROM prestamo JOIN usuario ON prestamo.id_user = usuario.id_usuario;"
+        sql = "SELECT prestamo.id_prestamo, prestamo.multa_total, usuario.rut FROM prestamo LEFT JOIN usuario ON prestamo.id_user = usuario.id_user;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
