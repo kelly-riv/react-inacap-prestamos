@@ -6,6 +6,7 @@ from model.usuario import Usuario
 from model.libros import Libro
 from model.stock import Stock
 from model.prorroga import Prorroga
+from model.base import DataBase
 
 from datetime import datetime
 
@@ -18,6 +19,7 @@ prestamo = Prestamo()
 stock = Stock()
 libro = Libro()
 prorroga = Prorroga()
+bd = DataBase()
 
 rut_encargado = ""
 
@@ -134,9 +136,11 @@ def dar_baja_libro():
     data = request.get_json()
     isbn = data.get('isbn')
     cantidad_baja = data.get('cantidadBaja')
+    is_damaged = data.get('isDamaged')
 
     try:
-        if stock.darBajaLibro(isbn, cantidad_baja):
+        if stock.darBajaLibro(isbn, cantidad_baja, is_damaged):
+            stock.updateCantidades()
             return jsonify({'message': 'Se ha dado de baja el libro correctamente'})
         else:
             return jsonify({'message': 'Ha ocurrido un error'})
@@ -145,11 +149,13 @@ def dar_baja_libro():
         app.logger.error(f"Error al dar de baja el libro: {str(e)}")
         return jsonify({'message': 'Error al dar de baja el libro', 'error': str(e)})
 
+    
 @app.route('/obtener_stock', methods=['GET'])
-@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def obtener_stock_libros():
-    lista_libros_stock = stock.getDisponibilidad()
-    stock_json = [{'isbn':s.ISBN,'titulo':s.titulo,'cantidad':s.cantidad,'cantidadReal':s.cantidadReal} for s in lista_libros_stock]
+    stock.updateCantidades() 
+    lista_libros_stock = stock.getStock()
+    stock_json = [{'id_libro': s[0], 'titulo': s[1], 'ISBN': s[2], 'cantidad': s[3], 'condicion': s[4]} for s in lista_libros_stock]
     return jsonify(stock_json)
 
 ######################

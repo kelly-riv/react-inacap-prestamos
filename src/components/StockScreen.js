@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal, Form, Checkbox } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 class StockScreen extends React.Component {
@@ -10,6 +10,7 @@ class StockScreen extends React.Component {
             showModal: false,
             selectedBook: '',
             updatedStockQuantity: 0,
+            isDamaged: false,
         };
     }
 
@@ -27,7 +28,7 @@ class StockScreen extends React.Component {
     };
 
     handleOpenModal = (isbn) => {
-        this.setState({ showModal: true, selectedBook: isbn, updatedStockQuantity: 0 });
+        this.setState({ showModal: true, selectedBook: isbn, updatedStockQuantity: 0, isDamaged: false });
     };
 
     handleCloseModal = () => {
@@ -38,8 +39,12 @@ class StockScreen extends React.Component {
         this.setState({ updatedStockQuantity: parseInt(event.target.value) });
     };
 
+    handleCheckboxChange = (event) => {
+        this.setState({ isDamaged: event.target.checked });
+    };
+
     handleSubmitBaja = () => {
-        const { selectedBook, updatedStockQuantity } = this.state;
+        const { selectedBook, updatedStockQuantity, isDamaged } = this.state;
         fetch('http://localhost:3001/dar_baja_libro', {
             method: 'POST',
             headers: {
@@ -48,6 +53,7 @@ class StockScreen extends React.Component {
             body: JSON.stringify({
                 isbn: selectedBook,
                 cantidadBaja: updatedStockQuantity,
+                isDamaged: isDamaged,
             }),
         })
             .then((response) => {
@@ -65,8 +71,8 @@ class StockScreen extends React.Component {
     };
 
     render() {
-        const { stock, showModal, selectedBook, updatedStockQuantity } = this.state;
-
+        const { stock, showModal, selectedBook, updatedStockQuantity, isDamaged } = this.state;
+    
         return (
             <center>
                 <Link to={'/MainScreen'}>
@@ -77,59 +83,60 @@ class StockScreen extends React.Component {
                 <div className="table-responsive">
                     <h1>Listado de Libros en Stock</h1>
                     <table className="table">
-                <thead>
-                  <tr>
-                    <th>ISBN</th>
-                    <th>Título</th>
-                    <th>Cantidad</th>
-                    <th>Acción</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.stock.map((libro) => (
-                    <tr key={libro.isbn}>
-                      <td>{libro.isbn}</td>
-                      <td>{libro.titulo}</td>
-                      <td>{libro.cantidad}</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-danger"
-                          onClick={() => this.handleOpenModal(libro.isbn)}
-                        >
-                          Dar de baja
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                </table>
+                        <thead>
+                            <tr>
+                                <th>ID Libro</th>
+                                <th>Título</th>
+                                <th>ISBN</th>
+                                <th>Condición</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {stock.map((libro) => (
+                                <tr key={libro.id_libro}>
+                                    <td>{libro.id_libro}</td>
+                                    <td>{libro.titulo}</td>
+                                    <td>{libro.ISBN}</td>
+                                    <td>{libro.condicion}</td>
+                                    <td>
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger"
+                                            onClick={() => this.handleOpenModal(libro.ISBN)}
+                                        >
+                                            Dar de baja
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                     <Modal show={showModal} onHide={this.handleCloseModal}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Dar de baja</Modal.Title>
+                            <Modal.Title>Dar de baja libro</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Form>
-                                <Form.Group controlId="formBasicEmail">
-                                    <Form.Label>Cantidad</Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        placeholder="Ingresar cantidad"
-                                        onChange={this.handleStockUpdate}
-                                    />
-                                </Form.Group>
-                            </Form>
+                            ¿Estás seguro de que quieres dar de baja este libro?
+                            <Form.Check
+                                type="checkbox"
+                                label="Marcar como libro en mal estado"
+                                checked={isDamaged}
+                                onChange={this.handleCheckboxChange}
+                            />
                         </Modal.Body>
                         <Modal.Footer>
+                            <Button variant="secondary" onClick={this.handleCloseModal}>
+                                Cerrar
+                            </Button>
                             <Button variant="primary" onClick={this.handleSubmitBaja}>
                                 Dar de baja
                             </Button>
                         </Modal.Footer>
                     </Modal>
                 </div>
-            </center>
-        );
-    }
-}
-
+                </center>
+    );
+} 
+} 
 export default StockScreen;
