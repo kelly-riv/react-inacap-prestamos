@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-07-2023 a las 17:48:58
+-- Tiempo de generación: 25-07-2023 a las 19:14:41
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -109,7 +109,8 @@ CREATE TABLE `prestamo_libros` (
   `id_libro` int(11) NOT NULL,
   `entregado` tinyint(4) NOT NULL DEFAULT 0,
   `fecha_entrega` date DEFAULT NULL,
-  `multa` int(11) DEFAULT NULL
+  `multa` int(11) DEFAULT NULL,
+  `n_prorroga` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
