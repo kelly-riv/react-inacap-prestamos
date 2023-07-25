@@ -30,11 +30,31 @@ function Prorroga(props) {
         .catch((error) => console.error('Error al obtener los préstamos:', error));
     };
 
+    //INSERTAR PRORROGA
+
+    const insertarProrroga = () => {
+      fetch('http://localhost:3001/obtener_libros', {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      })
+      .then((response) => {
+          if (!response.ok) {
+          throw new Error('Network response was not ok');
+          }
+          return response.json();
+      })
+      .then((data) => setLibros(data))
+      .catch((error) => console.error('Error al obtener los préstamos:', error));
+  };
+
     useEffect(() => {
         obtenerLibros(); 
     }, []);
 
     //INSERTAR PRORROGA
+    
     
 
   return (

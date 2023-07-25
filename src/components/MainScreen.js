@@ -24,6 +24,7 @@ class MainScreen extends React.Component {
       })
       .then((data) => this.setState({ prestamos: data }))
       .catch((error) => console.error('Error al obtener los préstamos:', error));
+      this.render()
   };
 
   componentDidMount() {
