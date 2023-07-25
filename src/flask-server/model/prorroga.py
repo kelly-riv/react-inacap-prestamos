@@ -1,4 +1,4 @@
-from base import DataBase
+from .base import DataBase
 from datetime import date
 
 class Prorroga(DataBase):
