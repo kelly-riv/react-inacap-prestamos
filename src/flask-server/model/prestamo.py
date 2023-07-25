@@ -88,8 +88,10 @@ class Prestamo(DataBase):
         except Exception as e:
             raise
 
+   
+
     def getCantidadPrestamos(self,id_user):
-        sql = "SELECT COUNT(*) FROM prestamo WHERE entregado = 0;"
+        sql = f"SELECT COUNT(*) FROM prestamo WHERE id_user = {id_user} AND entregado = 0;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchone()
@@ -171,3 +173,24 @@ class Prestamo(DataBase):
             print("Error: " + str(e.args))
             self.connection.close()
             return False
+        
+    def getISBN(self,id_libro):
+        sql= f"SELECT ISBN FROM `libro` WHERE id_libro = {id_libro};"
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchone()
+            return data[0]
+        except Exception as e:
+            raise
+
+    def getLibrosEnPrestamo(self,id_libro,id_user):
+        isbn = self.getISBN(id_libro)
+        sql = f"SELECT stock.ISBN FROM prestamo LEFT JOIN libro ON prestamo.id_libro = libro.id_libro LEFT JOIN stock ON libro.ISBN = stock.ISBN LEFT JOIN usuario ON usuario.id_user=prestamo.id_user WHERE usuario.id_user = {id_user} AND prestamo.entregado=0 AND libro.ISBN = '{isbn}';"
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchone()
+            if data is None:
+                return None
+            return data[0]
+        except Exception as e:
+            raise
