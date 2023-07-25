@@ -6,6 +6,8 @@ from model.usuario import Usuario
 from model.libros import Libro
 from model.stock import Stock
 
+from datetime import datetime
+
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, send_wildcard=True, allow_headers=['Content-Type'])
 
@@ -38,17 +40,41 @@ def insertar_prestamo():
     data = request.get_json()
     fecha_inicio = data.get('startDate')
     fecha_devolucion = data.get('endDate')
+    date_format = "%Y-%m-%d"
+
+    date_inicio = datetime.strptime(fecha_inicio,date_format)
+    date_final = datetime.strptime(fecha_devolucion,date_format)
+    time_difference = date_final-date_inicio
+
     global rut_usuario
     id_User = usuario.getIdUsuario(rut_usuario)
+    global tipo_usuario
+    tipo_usuario = usuario.getDocente(rut_usuario)
     id_libros = data.get('selectedBooks')
+    if str(id_libros) == "[]":
+        return jsonify({'message': 'Error al realizar el prestamo, no se seleccionaron libros'})
+
+    if tipo_usuario == 0:
+        if len(id_libros[0]) >4:
+            print("Fail")
+            return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede tener más de 4 libros'})
+        if time_difference.days>7:
+            print("Fail")
+            return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de más de 7 días'})
+
+    else:
+        if time_difference.days<7:
+            print("Fail")
+            return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de menos de 7 días'})
+        if time_difference.days>20:
+            print("Fail")
+            return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de más de 20 días'})
+    print("Continue")
     global rut_encargado
     id_encargado = encargado.getEncargadoId(rut_encargado)
-    
-    
     agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado)
     id_prestamo = prestamo.getIdPrestamo(fecha_inicio,fecha_devolucion,id_User,id_encargado)
     detalle = prestamo.setDetalle(id_prestamo,id_libros)
-
     if agregar_prestamo:
         return jsonify({'message': 'Prestamo realizado correctamente'})
     else:
@@ -68,9 +94,8 @@ def obtener_tipo_usuario():
     data = request.get_json()
     global rut_usuario
     rut_usuario = data.get('rut')
-    global tipo_usuario
-    tipo_usuario = usuario.obtener_tipo_usuario(rut_usuario)  
-    return jsonify(tipo_usuario)
+    docente = usuario.obtener_tipo_usuario(rut_usuario)  
+    return jsonify(docente)
 
 @app.route('/obtener_libros', methods=['GET'])
 def obtener_libros():
@@ -131,6 +156,68 @@ def generar_reporte_fecha():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

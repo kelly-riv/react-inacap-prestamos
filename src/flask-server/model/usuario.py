@@ -85,6 +85,19 @@ class Usuario(DataBase):
             self.connection.close()
             return {"success": False, "message": "Error al obtener el tipo de usuario: " + str(e)}
 
+    def getDocente(self,rut):
+        sql = f"SELECT docente FROM `usuario` WHERE rut = '{rut}'"
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result[0]
+        except Exception as e:
+            print("Error : "+str(e.args))
+            self.connection.close()
+            return {"success": False, "message": "Error al obtener el tipo de usuario: " + str(e)}
+
+
+
         
     
     def obtener_tipo_usuario(self, rut):
