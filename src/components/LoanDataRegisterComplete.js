@@ -98,7 +98,7 @@ function LoanDataRegisterComplete() {
       fetch('http://localhost:3001/insertar_prestamos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ startDate, endDate, idUser, idEncargado, selectedBooks })
+        body: JSON.stringify({ startDate, endDate, idUser, selectedBooks })
       })
       .then(response => response.json())
       .then(data => {

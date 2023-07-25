@@ -14,6 +14,8 @@ usuario = Usuario()
 prestamo = Prestamo()
 stock = Stock()
 
+rut_encargado = ""
+
 @app.route('/obtener_prestamos', methods=['GET'])
 def obtener_prestamos():
     lista_prestamos = prestamo.getListaPrestamos()
@@ -34,11 +36,14 @@ def insertar_prestamo():
     fecha_inicio = data.get('startDate')
     fecha_devolucion = data.get('endDate')
     id_User = data.get('idUser')
-    id_Encargado = data.get('idEncargado') 
     id_libros = data.get('selectedBooks')
+    global rut_encargado
+    print(rut_encargado)
+    id_encargado = encargado.getEncargadoId(rut_encargado)
     
-    agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_Encargado)
-    id_prestamo = prestamo.getIdPrestamo(fecha_inicio,fecha_devolucion,id_User,id_Encargado)
+    
+    agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado)
+    id_prestamo = prestamo.getIdPrestamo(fecha_inicio,fecha_devolucion,id_User,id_encargado)
     detalle = prestamo.setDetalle(id_prestamo,id_libros)
 
     if agregar_prestamo:
@@ -49,9 +54,10 @@ def insertar_prestamo():
 @app.route('/encargado_existe', methods=['POST'])
 def encargado_existe():
     data = request.get_json()
-    rut = data.get('rut')
+    global rut_encargado
+    rut_encargado = data.get('rut')
     password = data.get('password')
-    result = encargado.encargadoExiste(rut, password)  
+    result = encargado.encargadoExiste(rut_encargado, password)  
     return jsonify(result)
 
 @app.route('/obtener_tipo_usuario', methods=['POST'])

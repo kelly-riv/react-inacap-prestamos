@@ -44,6 +44,7 @@ class Encargado(DataBase):
         except Exception as e:
             raise
     
+    
     def encargadoExiste(self, rut, password):  
         sql = f"SELECT COUNT(*) FROM `encargado` WHERE rut = '{rut}' AND password = '{password}';"
         try:
@@ -53,5 +54,13 @@ class Encargado(DataBase):
                 return 1
             else:
                 return 0
+        except Exception as e:
+            raise
+    def getEncargadoId(self, rut):  
+        sql = f"SELECT id_encargado  FROM `encargado` WHERE rut = '{rut}';"
+        try:
+            self.cursor.execute(sql)
+            id = self.cursor.fetchone()[0]
+            return id
         except Exception as e:
             raise
