@@ -11,7 +11,7 @@ import BookGive from './components/BookGive'
 
 import StockScreen from './components/StockScreen';
 import LoanDataRegisterComplete from './components/LoanDataRegisterComplete';
-import Prorroga from './components/Prorroga';
+import Prorroga from './components/prorroga';
 
 const App = () => {
   
