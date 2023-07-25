@@ -40,6 +40,11 @@ class MainScreen extends React.Component {
           <table className='actionButtons'>
             <tbody>
               <tr>
+              <td>
+                  <Link to={"/RegistrarEntrega"}>
+                    <button type="button" className="btn btn-secondary">Registrar entrega de libro</button>
+                  </Link>
+                </td>
                 <td>
                   <Link to={"/RegistrarPrestamoCompleto"}>
                     <button type="button" className="btn btn-secondary">Registrar un Préstamo</button>
