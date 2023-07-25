@@ -36,7 +36,6 @@ def obtener_stock_libros():
     stock_json = [{'isbn':s.ISBN,'titulo':s.titulo,'cantidad':s.cantidad}for s in lista_libros_stock]
     return jsonify(stock_json)
 
-
 @app.route('/insertar_prestamos', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def insertar_prestamo():

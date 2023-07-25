@@ -27,7 +27,11 @@ class MainScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.obtenerPrestamos();
+    this.intervalID = setInterval(this.obtenerPrestamos, 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
   }
 
   render() {
@@ -66,7 +70,9 @@ class MainScreen extends React.Component {
                   </Link>
                 </td>
                 <td>
-                  <button type="button" className="btn btn-secondary">Registrar prorroga</button>
+                  <Link to={'/Prorroga'}>
+                    <button type="button" className="btn btn-secondary">Registrar prorroga</button>
+                  </Link>
                 </td>
               </tr>
             </tbody>

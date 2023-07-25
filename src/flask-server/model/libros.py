@@ -12,7 +12,7 @@ class Libro(DataBase):
     
     def getListaLibros(self):
         data = ""
-        sql = "SELECT id_libro, ISBN, titulo, autor, editorial, anio_publicacion FROM `libro` ORDER BY titulo ASC;"
+        sql = "SELECT id_libro, ISBN, titulo, autor, editorial, anio_publicacion, FROM `libro` ORDER BY titulo ASC;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()

@@ -11,6 +11,7 @@ import BookGive from './components/BookGive'
 
 import StockScreen from './components/StockScreen';
 import LoanDataRegisterComplete from './components/LoanDataRegisterComplete';
+import Prorroga from './components/prorroga';
 
 const App = () => {
   
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/StockScreen" element={<StockScreen />} />
           <Route path='/RegistrarPrestamoCompleto' element={<LoanDataRegisterComplete/>} />
           <Route path='/RegistrarEntrega' element={<BookGive/>} />
+          <Route path='/Prorroga' element={<Prorroga/>} />
         </Routes>
       </Router>
     </div>
