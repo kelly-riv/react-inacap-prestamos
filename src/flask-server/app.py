@@ -176,6 +176,8 @@ def entregar_libro():
     data = request.get_json()
     codigo = data.get('bookCode')
     estado = libro.getDisponibilidad(codigo)
+    if estado is None:
+        return jsonify({'message': 'Este libro no existe'})
     if estado == 1:
         return jsonify({'message': 'Este libro ya se ha devuelto'})
     else:

@@ -71,6 +71,8 @@ class Libro(DataBase):
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchone()
+            if data is None:
+                return data
             return data[0]
         except Exception as e:
             raise
