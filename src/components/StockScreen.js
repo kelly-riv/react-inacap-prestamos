@@ -1,82 +1,75 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form, Checkbox } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-class StockScreen extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            stock: [],
-            showModal: false,
-            selectedBook: '',
-            updatedStockQuantity: 0,
-            isDamaged: false,
-        };
-    }
-    //OBTENER TABLA
+const StockScreen = () => {
+    const [stock, setStock] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedBook, setSelectedBook] = useState('');
+    const [updatedStockQuantity, setUpdatedStockQuantity] = useState(0);
+    const [isDamaged, setIsDamaged] = useState(false);
 
-    componentDidMount() {
-        this.obtenerStock();
-    }
+    useEffect(() => {
+        obtenerStock();
+    }, []);
 
-    obtenerStock = () => {
-        fetch('http://localhost:3001/obtener_stock')
-            .then((res) => res.json())
-            .then((data) => {
-                this.setState({ stock: data });
-            })
-            .catch((error) => console.error('Error:', error));
+    const obtenerStock = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/obtener_stock');
+            const data = await response.json();
+            setStock(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
-    handleOpenModal = (isbn) => {
-        this.setState({ showModal: true, selectedBook: isbn, updatedStockQuantity: 0, isDamaged: false });
+    const handleOpenModal = (isbn) => {
+        setShowModal(true);
+        setSelectedBook(isbn);
+        setUpdatedStockQuantity(0);
+        setIsDamaged(false);
     };
 
-    handleCloseModal = () => {
-        this.setState({ showModal: false });
+    const handleCloseModal = () => {
+        setShowModal(false);
     };
 
-    handleStockUpdate = (event) => {
-        this.setState({ updatedStockQuantity: parseInt(event.target.value) });
+    const handleStockUpdate = (event) => {
+        setUpdatedStockQuantity(parseInt(event.target.value));
     };
 
-    handleCheckboxChange = (event) => {
-        this.setState({ isDamaged: event.target.checked });
+    const handleCheckboxChange = (event) => {
+        setIsDamaged(event.target.checked);
     };
 
-    //DAR DE BAJA UN LIBRO
+    const handleSubmitBaja = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/dar_baja_libro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    isbn: selectedBook,
+                    cantidadBaja: updatedStockQuantity,
+                    isDamaged: isDamaged,
+                }),
+            });
 
-    handleSubmitBaja = () => {
-        const { selectedBook, updatedStockQuantity, isDamaged } = this.state;
-        fetch('http://localhost:3001/dar_baja_libro', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                isbn: selectedBook,
-                cantidadBaja: updatedStockQuantity,
-                isDamaged: isDamaged,
-            }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                alert(data.message);
-                this.handleCloseModal();
-                this.obtenerStock();
-            })
-            .catch((error) => console.error('Error:', error));
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            alert(data.message);
+            handleCloseModal();
+            obtenerStock();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
-    render() {
-        const { stock, showModal, selectedBook, updatedStockQuantity, isDamaged } = this.state;
-    
-        return (
+    return (
             <center>
                 <Link to={'/MainScreen'}>
                     <Button type="button" className="btn btn-secondary volver">
@@ -108,7 +101,7 @@ class StockScreen extends React.Component {
                                     <button
                                         type="button"
                                         className="btn btn-danger"
-                                        onClick={() => this.handleOpenModal(libro.ISBN)}
+                                        onClick={() => handleOpenModal(libro.ISBN)}
                                     >
                                         Dar de baja
                                     </button>
@@ -117,7 +110,7 @@ class StockScreen extends React.Component {
                         ))}
                     </tbody>
                 </table>
-                    <Modal show={showModal} onHide={this.handleCloseModal}>
+                    <Modal show={showModal} onHide={handleCloseModal}>
                         <Modal.Header closeButton>
                             <Modal.Title>Dar de baja libro</Modal.Title>
                         </Modal.Header>
@@ -127,14 +120,14 @@ class StockScreen extends React.Component {
                                 type="checkbox"
                                 label="Marcar como libro en mal estado"
                                 checked={isDamaged}
-                                onChange={this.handleCheckboxChange}
+                                onChange={handleCheckboxChange}
                             />
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={this.handleCloseModal}>
+                            <Button variant="secondary" onClick={handleCloseModal}>
                                 Cerrar
                             </Button>
-                            <Button variant="primary" onClick={this.handleSubmitBaja}>
+                            <Button variant="primary" onClick={handleSubmitBaja}>
                                 Dar de baja
                             </Button>
                         </Modal.Footer>
@@ -142,6 +135,5 @@ class StockScreen extends React.Component {
                 </div>
                 </center>
     );
-} 
 } 
 export default StockScreen;
