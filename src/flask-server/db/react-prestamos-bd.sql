@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-07-2023 a las 08:07:36
+-- Tiempo de generación: 25-07-2023 a las 07:04:55
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -102,7 +102,7 @@ CREATE TABLE `prestamo` (
 --
 
 INSERT INTO `prestamo` (`id_prestamo`, `fecha_inicio`, `fecha_devolucion`, `id_user`, `id_encargado`, `multa_total`) VALUES
-(1, '2023-07-22', '2023-07-20', 1, 2, 0),
+(1, '2023-07-22', '2023-07-20', 1, 2, NULL),
 (2, '2023-07-22', '2023-07-18', 12, 3, NULL),
 (3, '2023-07-22', '2023-07-31', 8, 1, NULL),
 (4, '2023-07-13', '2023-07-23', 1, 1, NULL),
@@ -133,42 +133,39 @@ INSERT INTO `prestamo` (`id_prestamo`, `fecha_inicio`, `fecha_devolucion`, `id_u
 CREATE TABLE `prestamo_libros` (
   `id_prestamo_libros` int(11) NOT NULL,
   `id_prestamo` int(11) NOT NULL,
-  `id_libro` int(11) NOT NULL,
-  `entregado` tinyint(4) NOT NULL DEFAULT 0,
-  `fecha_entrega` date DEFAULT NULL,
-  `multa` int(11) DEFAULT NULL
+  `id_libro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `prestamo_libros`
 --
 
-INSERT INTO `prestamo_libros` (`id_prestamo_libros`, `id_prestamo`, `id_libro`, `entregado`, `fecha_entrega`, `multa`) VALUES
-(1, 1, 6, 0, NULL, NULL),
-(2, 1, 9, 0, NULL, NULL),
-(3, 2, 5, 0, NULL, NULL),
-(4, 3, 4, 0, NULL, NULL),
-(5, 3, 11, 0, NULL, NULL),
-(6, 3, 2, 0, NULL, NULL),
-(7, 16, 4, 0, NULL, NULL),
-(8, 17, 4, 0, NULL, NULL),
-(9, 17, 14, 0, NULL, NULL),
-(10, 18, 4, 0, NULL, NULL),
-(11, 18, 9, 0, NULL, NULL),
-(12, 18, 17, 0, NULL, NULL),
-(13, 18, 6, 0, NULL, NULL),
-(14, 19, 5, 0, NULL, NULL),
-(15, 19, 5, 0, NULL, NULL),
-(16, 25, 4, 0, NULL, NULL),
-(17, 25, 5, 0, NULL, NULL),
-(18, 25, 7, 0, NULL, NULL),
-(19, 25, 3, 0, NULL, NULL),
-(20, 25, 2, 0, NULL, NULL),
-(21, 25, 12, 0, NULL, NULL),
-(22, 26, 4, 0, NULL, NULL),
-(23, 26, 5, 0, NULL, NULL),
-(24, 26, 7, 0, NULL, NULL),
-(25, 26, 3, 0, NULL, NULL);
+INSERT INTO `prestamo_libros` (`id_prestamo_libros`, `id_prestamo`, `id_libro`) VALUES
+(1, 1, 6),
+(2, 1, 9),
+(3, 2, 5),
+(4, 3, 4),
+(5, 3, 11),
+(6, 3, 2),
+(7, 16, 4),
+(8, 17, 4),
+(9, 17, 14),
+(10, 18, 4),
+(11, 18, 9),
+(12, 18, 17),
+(13, 18, 6),
+(14, 19, 5),
+(15, 19, 5),
+(16, 25, 4),
+(17, 25, 5),
+(18, 25, 7),
+(19, 25, 3),
+(20, 25, 2),
+(21, 25, 12),
+(22, 26, 4),
+(23, 26, 5),
+(24, 26, 7),
+(25, 26, 3);
 
 -- --------------------------------------------------------
 
