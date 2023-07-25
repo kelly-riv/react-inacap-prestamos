@@ -3,10 +3,12 @@ import { Button, Modal, Form, Checkbox } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const StockScreen = () => {
+
     const [stock, setStock] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    //Datos de entrada para localhost
     const [selectedBook, setSelectedBook] = useState('');
-    const [updatedStockQuantity, setUpdatedStockQuantity] = useState(0);
+    const [isbn, setIsbn] = useState('')
     const [isDamaged, setIsDamaged] = useState(false);
 
     useEffect(() => {
@@ -26,16 +28,11 @@ const StockScreen = () => {
     const handleOpenModal = (isbn) => {
         setShowModal(true);
         setSelectedBook(isbn);
-        setUpdatedStockQuantity(0);
         setIsDamaged(false);
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
-    };
-
-    const handleStockUpdate = (event) => {
-        setUpdatedStockQuantity(parseInt(event.target.value));
     };
 
     const handleCheckboxChange = (event) => {

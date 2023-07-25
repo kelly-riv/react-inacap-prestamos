@@ -68,6 +68,7 @@ class Stock(DataBase):
             return False
 
     def darBajaLibro(self, isbn, is_damaged):
+            
         if is_damaged == True:
             condicion = 0
         else:
@@ -76,9 +77,9 @@ class Stock(DataBase):
             sql_libro = f'UPDATE libro SET disponibilidad = 0, condicion = {condicion} WHERE ISBN = "{isbn}";'
             self.cursor.execute(sql_libro)
 
-            sqlCantidadLibros = 'SELECT COUNT(*) as count FROM libro WHERE ISBN = "isbn";'
+            sqlCantidadLibros = f'SELECT COUNT(*) as count FROM libro WHERE ISBN = "{isbn}";' 
             self.cursor.execute(sqlCantidadLibros)
-            
+
             row = self.cursor.fetchone()
             if row is not None:
                 cantidad = row[0]
@@ -88,9 +89,12 @@ class Stock(DataBase):
             sql_stock = f'UPDATE stock SET cantidad = {cantidad} WHERE ISBN = "{isbn}";'
             self.cursor.execute(sql_stock)
             self.connection.commit()
+            self.getStock()
 
-            return True
+            return True 
+
         except Exception as e:
-            print("Error: " + str(e.args))
-            self.connection.close()
-            return False
+            print(f"Error al dar de baja el libro: {str(e)}")
+            return False 
+
+

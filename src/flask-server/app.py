@@ -139,11 +139,10 @@ def registrar_pago():
 def dar_baja_libro():
     data = request.get_json()
     isbn = data.get('isbn')
-    cantidad_baja = data.get('cantidadBaja')
-    is_damaged = data.get('isDamaged')
+    is_damaged = data.get('isDamaged') 
 
     try:
-        if stock.darBajaLibro(isbn, cantidad_baja, is_damaged):
+        if stock.darBajaLibro(isbn, is_damaged):
             return jsonify({'message': 'Se ha dado de baja el libro correctamente'})
         else:
             return jsonify({'message': 'Ha ocurrido un error'})
@@ -151,6 +150,7 @@ def dar_baja_libro():
     except Exception as e:
         app.logger.error(f"Error al dar de baja el libro: {str(e)}")
         return jsonify({'message': 'Error al dar de baja el libro', 'error': str(e)})
+
 
     
 @app.route('/obtener_stock', methods=['GET'])
