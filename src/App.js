@@ -7,6 +7,7 @@ import PaymentScreen from './components/PaymentScreen';
 import PaymentRegister from './components/PaymentRegister';
 import LoanReportForm from './components/LoanReportForm';
 import LoanRegister from './components/LoanRegister';
+import BookGive from './components/BookGive'
 
 import StockScreen from './components/StockScreen';
 import LoanDataRegisterComplete from './components/LoanDataRegisterComplete';
@@ -27,6 +28,8 @@ const App = () => {
           <Route path="/LoanRegister" element={<LoanRegister />} />
           <Route path="/StockScreen" element={<StockScreen />} />
           <Route path='/RegistrarPrestamoCompleto' element={<LoanDataRegisterComplete/>} />
+
+          <Route path='/RegistrarEntrega' element={<BookGive/>} />
         </Routes>
       </Router>
     </div>
