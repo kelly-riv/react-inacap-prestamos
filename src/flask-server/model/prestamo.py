@@ -113,8 +113,11 @@ class Prestamo(DataBase):
     
     def setDisponible(self,libro_id):
         sql = f"UPDATE libro SET disponibilidad=1 WHERE id_libro = {libro_id}"
+        sql2 =f"UPDATE prestamo_libros SET entregado=1 WHERE id_libro = {libro_id}"
         try:
             self.cursor.execute(sql)
+            self.connection.commit()
+            self.cursor.execute(sql2)
             self.connection.commit()
             return True
         except Exception as e:
@@ -141,6 +144,7 @@ class Prestamo(DataBase):
 
     def getMultas(self):
         data = ""
+        self.updateMultas()
         sql = "SELECT prestamo.id_prestamo, prestamo.multa_total, usuario.rut FROM prestamo JOIN usuario ON prestamo.id_user = usuario.id_usuario;"
         try:
             self.cursor.execute(sql)
