@@ -15,6 +15,7 @@ encargado = Encargado()
 usuario = Usuario()
 prestamo = Prestamo()
 stock = Stock()
+libro = Libro()
 
 rut_encargado = ""
 
@@ -171,7 +172,16 @@ def generar_reporte_fecha():
 def entregar_libro():
     data = request.get_json()
     codigo = data.get('bookCode')
-    print(codigo)
+    estado = libro.getDisponibilidad(codigo)
+    if estado == 1:
+        return jsonify({'message': 'Este libro ya se ha devuelto'})
+    else:
+        retornar = prestamo.setDisponible(codigo)
+        if retornar:
+            return jsonify({'message': 'Se ha devuleto correctamente'})
+        else:
+            return jsonify({'message': 'Ha ocurrido un error al devolder el libro'})
+
 
 
 

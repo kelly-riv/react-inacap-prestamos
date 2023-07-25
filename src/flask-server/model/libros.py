@@ -65,3 +65,12 @@ class Libro(DataBase):
             self.connection.close()
             return False
 
+
+    def getDisponibilidad(self,id_libro):
+        sql = f"SELECT disponibilidad FROM libro WHERE id_libro = {id_libro}"
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchone()
+            return data[0]
+        except Exception as e:
+            raise

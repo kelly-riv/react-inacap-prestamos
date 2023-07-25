@@ -110,6 +110,17 @@ class Prestamo(DataBase):
             print("Error: " + str(e.args))
             self.connection.close()
             return False
+    
+    def setDisponible(self,libro_id):
+        sql = f"UPDATE libro SET disponibilidad=1 WHERE id_libro = {libro_id}"
+        try:
+            self.cursor.execute(sql)
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print("Error: " + str(e.args))
+            self.connection.close()
+            return False
 
     def updatePrestamo(self,fecha_inicio, fecha_devolucion, id_user, id_encargado, id_prestamo):
         
