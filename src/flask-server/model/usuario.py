@@ -75,7 +75,7 @@ class Usuario(DataBase):
             return False
         
     def getIdUsuario(self,rut):
-        sql = f"SELECT id_usuario FROM `usuario` WHERE rut = '{rut}'"
+        sql = f"SELECT id_user FROM `usuario` WHERE rut = '{rut}'"
         try:
             self.cursor.execute(sql)
             id = self.cursor.fetchone()[0]

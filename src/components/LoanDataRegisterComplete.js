@@ -142,7 +142,6 @@ function LoanDataRegisterComplete() {
             value={selectedBooks[index]}
             className="form-select form-select-lg mb-3"
             aria-label=".form-select-lg example"
-            multiple
           >
             {books.map((book) => (
               <option key={book.id_libro} value={book.id_libro}>
