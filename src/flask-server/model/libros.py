@@ -38,6 +38,19 @@ class Libro(DataBase):
             self.connection.close()
             exito = False  # Agrega esta línea
         return exito
+    
+    def getDisponibilidadPrestamo(self):
+        sql = "SELECT DISTINCT libro.id_libro, stock.cantidad, libro.titulo FROM `stock`  LEFT JOIN libro ON stock.ISBN = libro.ISBN WHERE libro.disponibilidad=1 AND libro.condicion=0;"
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            stock = []
+            for value in data:
+                libro = (value[2],value[0],value[1])
+                stock.append(libro)
+            return stock
+        except Exception as e:
+            raise
 
     
     def updateLibro(self,titulo,autor,editorial,publicacion,id_libro):

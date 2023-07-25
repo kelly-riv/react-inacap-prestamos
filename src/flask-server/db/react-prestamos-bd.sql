@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-07-2023 a las 09:37:16
+-- Tiempo de generación: 25-07-2023 a las 17:13:37
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -66,21 +66,21 @@ CREATE TABLE `libro` (
 
 INSERT INTO `libro` (`id_libro`, `ISBN`, `titulo`, `autor`, `editorial`, `anio_publicacion`, `disponibilidad`, `condicion`) VALUES
 (2, '978-956-09719-5-1', 'Las aventuras de Amanda y el gato del pirata', 'Flores Guerra, Lilian', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', 2023, 1, 0),
-(3, '978-956-9455-52-0', 'Ladrido inverso', 'Azzar, Ernesto', 'Un Perro Negro SPA - Ediciones Askasis', 2023, 0, 0),
+(3, '978-956-9455-52-0', 'Ladrido inverso', 'Azzar, Ernesto', 'Un Perro Negro SPA - Ediciones Askasis', 2023, 1, 0),
 (4, '978-956-9455-51-3', 'El amor por los débiles & el instinto de asesinato', 'Axat, Julián', 'Un Perro Negro SPA - Ediciones Askasis', 2023, 1, 0),
-(5, '978-956-14-3003-7', 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', 2022, 0, 0),
-(6, '978-956-09719-3-7', 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', 2022, 0, 0),
-(7, '978-956-14-3003-7', 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', 2022, 0, 0),
-(8, '978-956-09719-3-7', 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', 2022, 0, 0),
-(9, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 1, 0),
+(5, '978-956-14-3003-7', 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', 2022, 1, 0),
+(6, '978-956-09719-3-7', 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', 2022, 1, 0),
+(7, '978-956-14-3003-7', 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', 2022, 1, 0),
+(8, '978-956-09719-3-7', 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', 2022, 1, 0),
+(9, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 0, 0),
 (10, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 1, 0),
-(11, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 0, 0),
-(12, '978-956-00-1555-6', 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', 2007, 0, 0),
+(11, '978-956-6211-02-0', 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', 2022, 1, 0),
+(12, '978-956-00-1555-6', 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', 2007, 1, 0),
 (13, '978-956-00-1555-6', 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', 2007, 1, 0),
-(14, '978-956-00-1555-6', 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', 2007, 0, 1),
-(15, '978-956-00-1536-5', 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', 2007, 0, 0),
+(14, '978-956-00-1555-6', 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', 2007, 1, 0),
+(15, '978-956-00-1536-5', 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', 2007, 1, 0),
 (16, '978-956-00-1536-5', 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', 2007, 1, 0),
-(17, '978-956-8234-14-0', 'Refranes y + con alma', 'Gómez Alfonso, María del Rosario', 'Editorial Por Un Mundo Mejor Ltda.', 2007, 0, 0);
+(17, '978-956-8234-14-0', 'Refranes y + con alma', 'Gómez Alfonso, María del Rosario', 'Editorial Por Un Mundo Mejor Ltda.', 2007, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -97,33 +97,6 @@ CREATE TABLE `prestamo` (
   `multa_total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `prestamo`
---
-
-INSERT INTO `prestamo` (`id_prestamo`, `fecha_inicio`, `fecha_devolucion`, `id_user`, `id_encargado`, `multa_total`) VALUES
-(1, '2023-07-22', '2023-07-20', 1, 2, 0),
-(2, '2023-07-22', '2023-07-18', 12, 3, NULL),
-(3, '2023-07-22', '2023-07-31', 8, 1, NULL),
-(4, '2023-07-13', '2023-07-23', 1, 1, NULL),
-(5, '2023-07-13', '2023-07-26', 1, 1, NULL),
-(6, '2023-07-06', '2023-07-13', 1, 1, NULL),
-(7, '2023-07-20', '2023-07-25', 1, 1, NULL),
-(13, '2023-07-12', '2023-07-25', 1, 1, NULL),
-(14, '2023-07-05', '2023-07-25', 1, 1, NULL),
-(15, '2023-07-06', '2023-07-13', 1, 1, NULL),
-(16, '2023-07-12', '2023-07-15', 1, 1, NULL),
-(17, '2023-07-05', '2023-07-23', 1, 1, NULL),
-(18, '2023-07-14', '2023-07-23', 1, 1, NULL),
-(19, '2023-07-05', '2023-07-26', 1, 1, NULL),
-(20, '2023-07-05', '2023-07-26', 1, 1, NULL),
-(21, '2023-07-13', '2023-07-19', 1, 1, NULL),
-(22, '2023-07-14', '2023-07-22', 1, 2, NULL),
-(23, '2023-07-13', '2023-07-27', 1, 2, NULL),
-(24, '2023-07-13', '2023-07-21', 4, 2, NULL),
-(25, '2023-07-21', '2023-08-03', 1, 1, NULL),
-(26, '2023-07-12', '2023-07-21', 1, 1, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -138,37 +111,6 @@ CREATE TABLE `prestamo_libros` (
   `fecha_entrega` date DEFAULT NULL,
   `multa` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `prestamo_libros`
---
-
-INSERT INTO `prestamo_libros` (`id_prestamo_libros`, `id_prestamo`, `id_libro`, `entregado`, `fecha_entrega`, `multa`) VALUES
-(1, 1, 6, 0, NULL, NULL),
-(2, 1, 9, 0, NULL, NULL),
-(3, 2, 5, 0, NULL, NULL),
-(4, 3, 4, 0, NULL, NULL),
-(5, 3, 11, 0, NULL, NULL),
-(6, 3, 2, 0, NULL, NULL),
-(7, 16, 4, 0, NULL, NULL),
-(8, 17, 4, 0, NULL, NULL),
-(9, 17, 14, 0, NULL, NULL),
-(10, 18, 4, 0, NULL, NULL),
-(11, 18, 9, 0, NULL, NULL),
-(12, 18, 17, 0, NULL, NULL),
-(13, 18, 6, 0, NULL, NULL),
-(14, 19, 5, 0, NULL, NULL),
-(15, 19, 5, 0, NULL, NULL),
-(16, 25, 4, 0, NULL, NULL),
-(17, 25, 5, 0, NULL, NULL),
-(18, 25, 7, 0, NULL, NULL),
-(19, 25, 3, 0, NULL, NULL),
-(20, 25, 2, 0, NULL, NULL),
-(21, 25, 12, 0, NULL, NULL),
-(22, 26, 4, 0, NULL, NULL),
-(23, 26, 5, 0, NULL, NULL),
-(24, 26, 7, 0, NULL, NULL),
-(25, 26, 3, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -318,13 +260,13 @@ ALTER TABLE `libro`
 -- AUTO_INCREMENT de la tabla `prestamo`
 --
 ALTER TABLE `prestamo`
-  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamo_libros`
 --
 ALTER TABLE `prestamo_libros`
-  MODIFY `id_prestamo_libros` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id_prestamo_libros` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT de la tabla `prorroga`

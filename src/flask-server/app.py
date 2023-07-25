@@ -54,6 +54,7 @@ def insertar_prestamo():
     global tipo_usuario
     tipo_usuario = usuario.getDocente(rut_usuario)
     id_libros = data.get('selectedBooks')
+    print(id_libros)
     if str(id_libros) == "[]":
         return jsonify({'message': 'Error al realizar el prestamo, no se seleccionaron libros'})
 
@@ -76,9 +77,14 @@ def insertar_prestamo():
     global rut_encargado
     id_encargado = encargado.getEncargadoId(rut_encargado)
     agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado)
-    id_prestamo = prestamo.getIdPrestamo(fecha_inicio,fecha_devolucion,id_User,id_encargado)
-    detalle = prestamo.setDetalle(id_prestamo,id_libros)
     if agregar_prestamo:
+        id_prestamo = prestamo.getIdPrestamo(fecha_inicio,fecha_devolucion,id_User,id_encargado)
+        detalle = prestamo.setDetalle(id_prestamo,id_libros)
+        for libro in id_libros:
+            for libro_id in libro:
+                print("No disponible")
+                prestamo.setNoDisponible(libro_id)
+
         return jsonify({'message': 'Prestamo realizado correctamente'})
     else:
         return jsonify({'message': 'Error al realizar el prestamo'})
@@ -106,8 +112,8 @@ def obtener_tipo_usuario():
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_libros():
     libro = Libro()
-    lista_libros = libro.getListaLibros()
-    libros_json = [{'id_libro': l.id, 'titulo': l.titulo, 'id_prestamo': l.id_prestamo} for l in lista_libros]
+    lista_libros = libro.getDisponibilidadPrestamo()
+    libros_json = [{'id_libro': l[1], 'titulo': l[0], 'id_prestamo': l[2]} for l in lista_libros]
     return jsonify(libros_json)
 
 @app.route('/obtener_multas',methods=['GET'])

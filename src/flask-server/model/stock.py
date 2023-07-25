@@ -43,7 +43,6 @@ class Stock(DataBase):
         except Exception as e:
             raise
 
-
     def getDisponibilidad(self):
         self.updateCantidades()
         data = ""

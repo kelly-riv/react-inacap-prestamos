@@ -60,7 +60,7 @@ class Prestamo(DataBase):
     # Funciones a través de consultas
     def getListaPrestamos(self):
         data = ""
-        sql = "SELECT id_prestamo, fecha_inicio, fecha_devolucion, id_user, id_encargado, multa_total FROM `prestamo`;"
+        sql = "SELECT id_prestamo, fecha_inicio, fecha_devolucion, id_user, id_encargado, multa_total FROM `prestamo` ORDER BY fecha_inicio ASC LIMIT 20;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
@@ -94,6 +94,16 @@ class Prestamo(DataBase):
 
         try:
             self.cursor.execute(sql, values)
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print("Error: " + str(e.args))
+            self.connection.close()
+            return False
+    def setNoDisponible(self,libro_id):
+        sql = f"UPDATE libro SET disponibilidad=0 WHERE id_libro = {libro_id}"
+        try:
+            self.cursor.execute(sql)
             self.connection.commit()
             return True
         except Exception as e:
