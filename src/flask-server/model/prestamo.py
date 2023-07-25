@@ -113,10 +113,6 @@ class Prestamo(DataBase):
             print("Error: " + str(e.args))
             self.connection.close()
             return False
-        
-    def updateMultas(self):
-        data = ""
-        sql = ""
 
     def getMultas(self):
         data = ""

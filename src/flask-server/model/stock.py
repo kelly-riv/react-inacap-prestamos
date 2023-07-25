@@ -115,16 +115,12 @@ class Stock(DataBase):
             return False
     
     def darBajaLibro(self, isbn, cantidad_baja):
-        sql = "SELECT cantidad FROM stock WHERE ISBN = '{}'".format(isbn)
-        self.cursor.execute(sql)
-        data = self.cursor.fetchone()
-        cantidad_actual = data[0]
-
-        if cantidad_baja > cantidad_actual:
-            raise Exception('La cantidad a dar de baja es mayor que la cantidad actual en stock')
-
-        nueva_cantidad = cantidad_actual - cantidad_baja
-
-        sql = "UPDATE stock SET cantidad = {} WHERE ISBN = '{}'".format(nueva_cantidad, isbn)
-        self.cursor.execute(sql)
-        self.connection.commit()
+        sql = f'UPDATE libro SET condicion = 0 WHERE ISBN = "{isbn}" LIMIT {cantidad_baja};'
+        try:
+            self.cursor.execute(sql)
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print("Error: " + str(e.args))
+            self.connection.close()
+            return False

@@ -22,12 +22,14 @@ rut_usuario = ""
 tipo_usuario = 0
 
 @app.route('/obtener_prestamos', methods=['GET'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_prestamos():
     lista_prestamos = prestamo.getListaPrestamos()
     prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'id_user': p.id_user, 'id_encargado': p.id_encargado, 'multa_total': p.multa_total} for p in lista_prestamos]
     return jsonify(prestamos_json)
 
 @app.route('/obtener_stock', methods=['GET'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_stock_libros():
     stock = Stock()
     lista_libros_stock = stock.getDisponibilidad()
@@ -36,6 +38,7 @@ def obtener_stock_libros():
 
 
 @app.route('/insertar_prestamos', methods=['POST'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def insertar_prestamo():
     data = request.get_json()
     fecha_inicio = data.get('startDate')
@@ -81,6 +84,7 @@ def insertar_prestamo():
         return jsonify({'message': 'Error al realizar el prestamo'})
 
 @app.route('/encargado_existe', methods=['POST'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def encargado_existe():
     data = request.get_json()
     global rut_encargado
@@ -90,6 +94,7 @@ def encargado_existe():
     return jsonify(result)
 
 @app.route('/obtener_tipo_usuario', methods=['POST'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_tipo_usuario():
     data = request.get_json()
     global rut_usuario
@@ -98,6 +103,7 @@ def obtener_tipo_usuario():
     return jsonify(docente)
 
 @app.route('/obtener_libros', methods=['GET'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_libros():
     libro = Libro()
     lista_libros = libro.getListaLibros()
@@ -105,6 +111,7 @@ def obtener_libros():
     return jsonify(libros_json)
 
 @app.route('/obtener_multas',methods=['GET'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_multas():
     lista_multas = prestamo.getMultas()
     multas_json = [{'id_prestamo': p[0], 'multa_total': p[1], 'rut': p[2]} for p in lista_multas]

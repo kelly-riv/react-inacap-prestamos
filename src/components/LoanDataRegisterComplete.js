@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function LoanDataRegisterComplete() {
+
+
   const inputStyle = {
     width: '330px',
   }
