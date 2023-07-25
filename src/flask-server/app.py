@@ -152,6 +152,15 @@ def generar_reporte_fecha():
     except Exception as e:
         app.logger.error(f"Error al obtener libros en esa fecha")
         return jsonify({'message':'Error al realizar prestamo'})
+    
+@app.route('/entregar_libro', methods =['POST'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+def entregar_libro():
+    data = request.get_json()
+    codigo = data.get('bookCode')
+    print(codigo)
+
+
 
 
 if __name__ == '__main__':
