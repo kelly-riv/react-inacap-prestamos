@@ -190,26 +190,19 @@ def entregar_libro():
         else:
             return jsonify({'message': 'Ha ocurrido un error al devolder el libro'})
         
-@app.route('/registrar_prorroga', methods =['POST'])
+@app.route('/insertar_prorroga', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
-def registrar_prorroga():
+def insertar_prorroga():
     data = request.get_json()
+    fecha_inicio = data.get('startDate')
+    fecha_termino = data.get('endDate')
+    id_libro = data.get('id_libro')
+    id_prestamo = data.get('id_prestamo')
 
-    fechaInicio = data.get('fechaInicio')
-    fechaTermino = data.get('fechaTermino')
-    libros_prestamo_id = data.get('libros_prestamo_id')
-    user_id = data.get('user_id')
-    is_docente = data.get('is_docente')
-
-    if not fechaInicio or not fechaTermino or not libros_prestamo_id or not user_id or is_docente is None:
-        return jsonify({'message': 'Faltan datos requeridos para realizar la solicitud de prórroga'})
-
-    prorroga_registrada = prorroga.newProrroga(fechaInicio, fechaTermino, libros_prestamo_id, user_id, is_docente)
-
-    if prorroga_registrada:
-        return jsonify({'message': 'Prórroga registrada correctamente'})
+    if prorroga.newProrroga(fecha_inicio, fecha_termino, id_libro, id_prestamo):
+        return jsonify({'message': 'Prórroga insertada correctamente'})
     else:
-        return jsonify({'message': 'Ha ocurrido un error al registrar la prórroga'})
+        return jsonify({'message': 'Error al insertar la prórroga'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
