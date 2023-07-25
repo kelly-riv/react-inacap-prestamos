@@ -1,5 +1,4 @@
 from .base import DataBase
-from .base import DataBase
 
 class Stock(DataBase):
     
@@ -12,7 +11,6 @@ class Stock(DataBase):
     
     # Getters    
 
-    
     # Setters
     def setISBN(self, newISBN):
         self.ISBN = newISBN
@@ -24,11 +22,8 @@ class Stock(DataBase):
         self.updateCantidad()
         return True
 
-########################################################
-
     def updateCantidades(self):
-        data = ""
-        sql = "SELECT ISBN, count(*) as cantidad FROM libro GROUP BY isbn HAVING count(*) > 1;"
+        sql = "SELECT ISBN, count(*) as cantidad FROM libro WHERE disponibilidad = 1 AND condicion = 0 GROUP BY isbn;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
@@ -40,39 +35,22 @@ class Stock(DataBase):
                 except Exception as e:
                     print("Error: " + str(e.args))
                     self.connection.close()
-            return 
+            return True
         except Exception as e:
-            raise
-
-    def getDisponibilidad(self):
-        self.updateCantidades()
-        data = ""
-        sql = "SELECT DISTINCT stock.ISBN, stock.cantidad, libro.titulo, stock.disponibles FROM `stock` LEFT JOIN libro ON stock.ISBN = libro.ISBN;"
-        try:
-            self.cursor.execute(sql)
-            data = self.cursor.fetchall()
-            stock = []
-            for value in data:
-                libro = Stock(value[2],value[0],value[1],value[3])
-                stock.append(libro)
-            return stock
-        except Exception as e:
-            raise
+            print("Error: " + str(e.args))
+            self.connection.close()
+            return False
 
     def getStock(self):
-        data = ""
-        sql = "SELECT libro.titulo, libro.autor,stock.ISBN,stock.cantidad FROM libro LEFT JOIN stock ON libro.ISBN=stock.ISBN;"
+        sql = "SELECT libro.id_libro, libro.titulo, libro.ISBN, stock.cantidad, libro.condicion FROM libro LEFT JOIN stock ON libro.ISBN=stock.ISBN;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
-            stock_items = []
-            for value in data:
-                stock_item = Stock(value[0], value[1],value[2],value[3])
-                stock_items.append(stock_item)
-            self.stock_items = stock_items
-            return stock_items
+            return data
         except Exception as e:
-            raise
+            print("Error: " + str(e.args))
+            self.connection.close()
+            return []
     
     def newStock(self, stock_item):
         ISBN = stock_item.ISBN
@@ -103,7 +81,7 @@ class Stock(DataBase):
     
     def updateCantidad(self):
         ISBN = self.ISBN
-        sql = "SELECT COUNT(*) FROM libro WHERE ISBN='{}';".format(ISBN)
+        sql = "SELECT COUNT(*) FROM libro WHERE ISBN='{}';".format(ISBN) 
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()
@@ -117,8 +95,9 @@ class Stock(DataBase):
             self.connection.close()
             return False
 
-    def darBajaLibro(self, isbn, cantidad_baja):
-        sql = f'UPDATE libro SET condicion = 1 WHERE ISBN = "{isbn}" LIMIT {cantidad_baja};'
+    def darBajaLibro(self, isbn, cantidad_baja, is_damaged):
+        condicion = 1 if is_damaged else 0
+        sql = f'UPDATE libro SET disponibilidad = 0, condicion = {condicion} WHERE ISBN = "{isbn}" AND disponibilidad = 1 LIMIT {cantidad_baja};'
         try:
             self.cursor.execute(sql)
             self.connection.commit()
