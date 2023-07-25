@@ -156,7 +156,7 @@ def dar_baja_libro():
 @app.route('/obtener_stock', methods=['GET'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def obtener_stock_libros():
-    stock.updateCantidades() 
+    #stock.updateCantidades() 
     lista_libros_stock = stock.getStock()
     stock_json = [{'id_libro': s[0], 'titulo': s[1], 'ISBN': s[2], 'cantidad': s[3], 'condicion': s[4]} for s in lista_libros_stock]
     return jsonify(stock_json)

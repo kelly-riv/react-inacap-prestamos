@@ -8,19 +8,6 @@ class Stock(DataBase):
         self.ISBN = ISBN
         self.cantidad = cantidad
         self.cantidadReal = cantidadReal
-    
-    # Getters    
-
-    # Setters
-    def setISBN(self, newISBN):
-        self.ISBN = newISBN
-        self.updateISBN()
-        return True
-    
-    def setCantidad(self, newCantidad):
-        self.cantidad = newCantidad
-        self.updateCantidad()
-        return True
 
     def updateCantidades(self):
         sql = "SELECT ISBN, count(*) as cantidad FROM libro WHERE disponibilidad = 1 AND condicion = 0 GROUP BY isbn;"
@@ -80,14 +67,25 @@ class Stock(DataBase):
             self.connection.close()
             return False
 
-    def darBajaLibro(self, isbn, cantidad_baja, is_damaged):
-        condicion = 1 if is_damaged else 0
+    def darBajaLibro(self, isbn, is_damaged):
+        if is_damaged == True:
+            condicion = 0
+        else:
+            condicion = 1
         try:
-            sql_libro = f'UPDATE libro SET disponibilidad = 0, condicion = {condicion} WHERE ISBN = "{isbn}" AND disponibilidad = 1 LIMIT {cantidad_baja};'
+            sql_libro = f'UPDATE libro SET disponibilidad = 0, condicion = {condicion} WHERE ISBN = "{isbn}";'
             self.cursor.execute(sql_libro)
-            self.connection.commit()
 
-            sql_stock = f'UPDATE stock SET cantidad = cantidad - {cantidad_baja} WHERE ISBN = "{isbn}" AND cantidad >= {cantidad_baja};'
+            sqlCantidadLibros = 'SELECT COUNT(*) as count FROM libro WHERE ISBN = "isbn";'
+            self.cursor.execute(sqlCantidadLibros)
+            
+            row = self.cursor.fetchone()
+            if row is not None:
+                cantidad = row[0]
+            else:
+                cantidad = 0
+
+            sql_stock = f'UPDATE stock SET cantidad = {cantidad} WHERE ISBN = "{isbn}";'
             self.cursor.execute(sql_stock)
             self.connection.commit()
 

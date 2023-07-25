@@ -51,7 +51,6 @@ const StockScreen = () => {
                 },
                 body: JSON.stringify({
                     isbn: selectedBook,
-                    cantidadBaja: updatedStockQuantity,
                     isDamaged: isDamaged,
                 }),
             });
