@@ -87,13 +87,21 @@ class Prestamo(DataBase):
             return prestamos
         except Exception as e:
             raise
-            
-    def insertarPrestamo(self, fecha_inicio, fecha_devolucion, id_User, id_Encargado):
-        sql = "INSERT INTO `prestamo` (`fecha_inicio`, `fecha_devolucion`, `id_user`, `id_encargado`) VALUES (%s, %s, %s, %s)"
-        values = (fecha_inicio, fecha_devolucion, id_User, id_Encargado)
 
+    def getCantidadPrestamos(self,id_user):
+        sql = "SELECT COUNT(*) FROM prestamo WHERE entregado = 0;"
         try:
-            self.cursor.execute(sql, values)
+            self.cursor.execute(sql)
+            data = self.cursor.fetchone()
+            return data[0]
+        except Exception as e:
+            raise
+
+            
+    def insertarPrestamo(self, fecha_inicio, fecha_devolucion, id_User,id_encargado, id_libro):
+        sql = f"INSERT INTO `prestamo` (`fecha_inicio`, `fecha_termino`, `id_user`, `id_encargado`,`id_libro`) VALUES ('{fecha_inicio}', '{fecha_devolucion}', {id_User}, {id_encargado},{id_libro})"
+        try:
+            self.cursor.execute(sql)
             self.connection.commit()
             return True
         except Exception as e:

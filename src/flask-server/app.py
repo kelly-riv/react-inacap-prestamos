@@ -49,12 +49,11 @@ def insertar_prestamo():
     global tipo_usuario
     tipo_usuario = usuario.getDocente(rut_usuario)
     id_libros = data.get('selectedBooks')
-    print(id_libros)
     if str(id_libros) == "[]":
         return jsonify({'message': 'Error al realizar el prestamo, no se seleccionaron libros'})
 
     if tipo_usuario == 0:
-        if len(id_libros[0]) >4:
+        if prestamo.getCantidadPrestamos(id_User) >4:
             print("Fail")
             return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede tener más de 4 libros'})
         if time_difference.days>7:
@@ -71,18 +70,14 @@ def insertar_prestamo():
     print("Continue")
     global rut_encargado
     id_encargado = encargado.getEncargadoId(rut_encargado)
-    agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado)
-    if agregar_prestamo:
-        id_prestamo = prestamo.getIdPrestamo(fecha_inicio,fecha_devolucion,id_User,id_encargado)
-        detalle = prestamo.setDetalle(id_prestamo,id_libros)
-        for libro in id_libros:
-            for libro_id in libro:
-                print("No disponible")
-                prestamo.setNoDisponible(libro_id)
-
-        return jsonify({'message': 'Prestamo realizado correctamente'})
-    else:
-        return jsonify({'message': 'Error al realizar el prestamo'})
+    for libro in id_libros:
+        for libro_id in libro:
+            agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado,libro_id)
+            print("No disponible")
+            prestamo.setNoDisponible(libro_id)
+            if agregar_prestamo:
+                return jsonify({'message': 'Prestamo realizado correctamente'})
+    return jsonify({'message': 'Error al realizar el prestamo'})
 
 @app.route('/encargado_existe', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
