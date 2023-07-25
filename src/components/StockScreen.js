@@ -13,6 +13,7 @@ class StockScreen extends React.Component {
             isDamaged: false,
         };
     }
+    //OBTENER TABLA
 
     componentDidMount() {
         this.obtenerStock();
@@ -42,6 +43,8 @@ class StockScreen extends React.Component {
     handleCheckboxChange = (event) => {
         this.setState({ isDamaged: event.target.checked });
     };
+
+    //DAR DE BAJA UN LIBRO
 
     handleSubmitBaja = () => {
         const { selectedBook, updatedStockQuantity, isDamaged } = this.state;
@@ -83,35 +86,37 @@ class StockScreen extends React.Component {
                 <div className="table-responsive">
                     <h1>Listado de Libros en Stock</h1>
                     <table className="table">
-                        <thead>
-                            <tr>
-                                <th>ID Libro</th>
-                                <th>Título</th>
-                                <th>ISBN</th>
-                                <th>Condición</th>
-                                <th>Acción</th>
+                    <thead>
+                        <tr>
+                            <th>ID Libro</th>
+                            <th>Título</th>
+                            <th>ISBN</th>
+                            <th>Condición</th>
+                            <th>Disponibilidad</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {stock.map((libro) => (
+                            <tr key={libro.id_libro}>
+                                <td>{libro.id_libro}</td>
+                                <td>{libro.titulo}</td>
+                                <td>{libro.ISBN}</td>
+                                <td>{libro.condicion === 1 ? "Mal estado" : "Buen estado"}</td>
+                                <td>{libro.disponibilidad === 1 ? "No Disponible" : "Disponible"}</td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                        onClick={() => this.handleOpenModal(libro.ISBN)}
+                                    >
+                                        Dar de baja
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {stock.map((libro) => (
-                                <tr key={libro.id_libro}>
-                                    <td>{libro.id_libro}</td>
-                                    <td>{libro.titulo}</td>
-                                    <td>{libro.ISBN}</td>
-                                    <td>{libro.condicion}</td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            className="btn btn-danger"
-                                            onClick={() => this.handleOpenModal(libro.ISBN)}
-                                        >
-                                            Dar de baja
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                        ))}
+                    </tbody>
+                </table>
                     <Modal show={showModal} onHide={this.handleCloseModal}>
                         <Modal.Header closeButton>
                             <Modal.Title>Dar de baja libro</Modal.Title>

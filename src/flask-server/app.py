@@ -144,7 +144,6 @@ def dar_baja_libro():
 
     try:
         if stock.darBajaLibro(isbn, cantidad_baja, is_damaged):
-            stock.updateCantidades()
             return jsonify({'message': 'Se ha dado de baja el libro correctamente'})
         else:
             return jsonify({'message': 'Ha ocurrido un error'})
