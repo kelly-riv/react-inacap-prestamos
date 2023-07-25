@@ -16,6 +16,9 @@ stock = Stock()
 
 rut_encargado = ""
 
+rut_usuario = ""
+tipo_usuario = 0
+
 @app.route('/obtener_prestamos', methods=['GET'])
 def obtener_prestamos():
     lista_prestamos = prestamo.getListaPrestamos()
@@ -35,10 +38,10 @@ def insertar_prestamo():
     data = request.get_json()
     fecha_inicio = data.get('startDate')
     fecha_devolucion = data.get('endDate')
-    id_User = data.get('idUser')
+    global rut_usuario
+    id_User = usuario.getIdUsuario(rut_usuario)
     id_libros = data.get('selectedBooks')
     global rut_encargado
-    print(rut_encargado)
     id_encargado = encargado.getEncargadoId(rut_encargado)
     
     
@@ -63,9 +66,11 @@ def encargado_existe():
 @app.route('/obtener_tipo_usuario', methods=['POST'])
 def obtener_tipo_usuario():
     data = request.get_json()
-    rut = data.get('rut')
-    result = usuario.obtener_tipo_usuario(rut)  
-    return jsonify(result)
+    global rut_usuario
+    rut_usuario = data.get('rut')
+    global tipo_usuario
+    tipo_usuario = usuario.obtener_tipo_usuario(rut_usuario)  
+    return jsonify(tipo_usuario)
 
 @app.route('/obtener_libros', methods=['GET'])
 def obtener_libros():
