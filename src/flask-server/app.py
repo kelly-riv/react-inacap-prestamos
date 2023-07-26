@@ -259,10 +259,18 @@ def insertar_prorroga():
     print(id_prestamo)
 
     response = prorroga.newProrroga(fecha_termino, id_libro, id_prestamo)
-    if 'error' in response:
-        return jsonify({'error': response['error']}), 400
+    if response == 1:
+        error = "Ya ha solicitado una prórroga."
+    elif response ==2:
+        error = "La prorroga supera el límite de 3 días."
+    elif response == 3:
+        error = "Ha alcanzado el límite de prórrogas consecutivas."
+    elif response == 4:
+        error ="Prórroga insertada correctamente"
     else:
-        return jsonify({'message': 'Prórroga insertada correctamente'}), 200
+        error = "No se ha podido realizar la prórroga"
+    
+    return jsonify(error)
 
 #Manejo de busqueda de usuarios
 @app.route('/realizar_busqueda_usuarios', methods=['POST'])
@@ -290,9 +298,7 @@ def obtener_libros_usuario():
     fecha = data.get('loanDate')
     try:
         lista_prestamos = prestamo.getListaPrestamosFecha(fecha)
-        print(lista_prestamos)
         prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'multa_total': p.multa_total} for p in lista_prestamos]
-        print(prestamos_json)
         return jsonify(prestamos_json)
     except Exception as e:
         app.logger.error(f"Error al obtener libros en esa fecha")
