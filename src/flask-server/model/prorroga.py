@@ -1,8 +1,7 @@
 from .base import DataBase
 from datetime import datetime
 
-class Prorroga(DataBase):
-       
+class Prorroga(DataBase):       
     def newProrroga(self, fechaTermino, id_libro, id_prestamo):
         docente = self.getDocente(id_prestamo)
         n_prorroga = self.getNumProrrogas(id_prestamo)

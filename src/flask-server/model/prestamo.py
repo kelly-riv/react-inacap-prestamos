@@ -245,7 +245,7 @@ class Prestamo(DataBase):
 
     def getLibrosEnPrestamo(self,id_libro,id_user):
         isbn = self.getISBN(id_libro)
-        sql = f"SELECT stock.ISBN FROM prestamo LEFT JOIN libro ON prestamo.id_libro = libro.id_libro LEFT JOIN stock ON libro.ISBN = stock.ISBN LEFT JOIN usuario ON usuario.id_user=prestamo.id_user WHERE usuario.id_user = {id_user} AND prestamo.entregado=0 AND libro.ISBN = '{isbn}';"
+        sql = f"SELECT l.id_libro, l.titulo FROM prestamo AS p JOIN libro AS l ON p.id_libro = l.id_libro WHERE p.id_user = {id_user};"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchone()
