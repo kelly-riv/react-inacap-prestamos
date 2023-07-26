@@ -12,7 +12,7 @@ return(
                 <th>ID Préstamo</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Devolución</th>
-                <th>Multa Total</th>
+                <th>Estado</th>
               </tr>
             </thead>
             <tbody>

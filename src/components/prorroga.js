@@ -63,8 +63,7 @@ function Prorroga(props) {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        alert(data.error)
+        alert(data)
       })
       .catch((error) => {
         console.error('Error al insertar la prórroga:', error);

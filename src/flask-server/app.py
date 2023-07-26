@@ -37,7 +37,7 @@ def hashing (text):
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_prestamos():
     lista_prestamos = prestamo.getListaPrestamos()
-    prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'id_user': p.id_user, 'id_encargado': p.id_encargado, 'multa_total': p.multa_total} for p in lista_prestamos]
+    prestamos_json = [{'id_prestamo': p[0] , 'fecha_inicio': p[1], 'fecha_devolucion': p[2], 'id_user': p[3],'estado':p[4],'codigo_libro':p[5]} for p in lista_prestamos]
     return jsonify(prestamos_json)
 
 @app.route('/obtener_prestamos_prorroga', methods=['GET'])
@@ -229,7 +229,7 @@ def generar_reporte_fecha():
     try:
         lista_prestamos = prestamo.getListaPrestamosFecha(fecha)
         print(lista_prestamos)
-        prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'multa_total': p.multa_total} for p in lista_prestamos]
+        prestamos_json = [{'id_prestamo': p[0], 'fecha_inicio': p[1], 'fecha_devolucion': p[2], 'multa_total': p[4]} for p in lista_prestamos]
         print(prestamos_json)
         return jsonify(prestamos_json)
     except Exception as e:
@@ -260,13 +260,13 @@ def entregar_libro():
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def insertar_prorroga():
     data = request.get_json()
-    fecha_inicio = data.get('startDate')
     fecha_termino = data.get('endDate')
     id_libro = data.get('id_libro')
     id_prestamo = data.get('id_prestamo')
     print(id_prestamo)
 
     response = prorroga.newProrroga(fecha_termino, id_libro, id_prestamo)
+    error= "Error en la prórroga"
     if response == 1:
         error = "Ya ha solicitado una prórroga."
     elif response ==2:
@@ -317,4 +317,3 @@ def obtener_libros_usuario():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
-

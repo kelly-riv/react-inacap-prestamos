@@ -17,24 +17,32 @@ class Prorroga(DataBase):
 
         if docente == 0:
             if n_prorroga >= 1:
+                print(1)
                 return 1
             elif dias_prorroga.days > 3:
+                print(2)
+
                 return 2
 
         if docente == 1:
             if n_prorroga >= 3:
+                print(3)
+
                 return 3
         
         try:
             self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `prestamo_id`) VALUES ('{fechaInicio}', '{fechaTermino}', {id_prestamo})")
             self.cursor.execute(f"UPDATE `prestamo` SET `multa_total` = 0, fecha_termino ='{fechaTermino}' WHERE `id_prestamo` = {id_prestamo}")
             self.connection.commit()
+            print(4)
             return 4
         except Exception as e:
             error_message = "Error: " + str(e.args)
             print(error_message)
             self.connection.close()
+            print(5)
             return 5
+        print(6)
     
     def getFechaTerminoPrestamo(self,id_prestamo):
         data = ""
@@ -99,5 +107,3 @@ class Prorroga(DataBase):
             print("Error: " + str(e.args))
             self.connection.close()
             return False       
-
-

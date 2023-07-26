@@ -1,43 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../App.css';
 import { Link } from 'react-router-dom';
 
-class MainScreen extends React.Component {
-  state = {
-    prestamos: [],
-  };
+function MainScreen() {
+  const [prestamos, setPrestamos] = useState([]);
 
-  obtenerPrestamos = () => {
-    fetch('http://localhost:3001/obtener_prestamos', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
+  useEffect(() => {
+    const obtenerPrestamos = () => {
+      fetch('http://localhost:3001/obtener_prestamos', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .then((data) => this.setState({ prestamos: data }))
-      .catch((error) => console.error('Error al obtener los préstamos:', error));
-      this.render()
-  };
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => setPrestamos(data))
+        .catch((error) => console.error('Error al obtener los préstamos:', error));
+    };
 
-  componentDidMount() {
-    this.intervalID = setInterval(this.obtenerPrestamos, 3000);
-  }
+    const intervalID = setInterval(obtenerPrestamos, 3000);
+    return () => clearInterval(intervalID); // This gets executed when the component is unmounted
+  }, []);
 
-  componentWillUnmount() {
-    clearInterval(this.intervalID);
-  }
-
-  render() {
-    return (
-      <center>
+  return (
+    <center>
         <Link to={"/"}>
           <button type="button" className="btn btn-secondary volver" >Cerrar Sesión</button>
         </Link>
@@ -89,32 +82,30 @@ class MainScreen extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th>ID Préstamo</th>
+                <th>Código préstamo</th>
+                <th>Código del libro</th>
                 <th>Fecha Inicio</th>
-                <th>Fecha Devolución</th>
-                <th>ID Usuario</th>
-                <th>ID Encargado</th>
-                <th>Multa Total</th>
+                <th>Fecha Término</th>
+                <th>RUT usuario</th>
+                <th>Estado</th>
               </tr>
             </thead>
             <tbody>
-              {this.state.prestamos.map((prestamo) => (
+              {prestamos.map((prestamo) => (
                 <tr key={prestamo.id_prestamo}>
                   <td>{prestamo.id_prestamo}</td>
+                  <td>{prestamo.codigo_libro}</td>
                   <td>{prestamo.fecha_inicio}</td>
                   <td>{prestamo.fecha_devolucion}</td>
                   <td>{prestamo.id_user}</td>
-                  <td>{prestamo.id_encargado}</td>
-                  <td>{prestamo.multa_total}</td>
+                  <td>{prestamo.estado}</td>
                 </tr>
-              ))
-        }
+              ))}
             </tbody>    
           </table>
         </div>
       </center>
-    );
-  }
+  );
 }
 
 export default MainScreen;
