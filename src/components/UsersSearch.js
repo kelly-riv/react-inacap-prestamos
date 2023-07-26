@@ -21,20 +21,20 @@ const UserSearch = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ rut }),
     })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setDataUser(data); 
+          setMessage(<Alert variant="success">Usuario encontrado correctamente.</Alert>);
         } else {
-          throw new Error();
+          setDataUser([]);
+          setMessage(<Alert variant="warning">Usuario no encontrado.</Alert>);
         }
       })
-      .then((data) => {
-        setDataUser(data);
-        setMessage(<Alert variant="success">Usuario encontrado correctamente.</Alert>);
-      })
       .catch((error) => {
-        console.error('Error al obtener los datos del usuario:', error);
-        setMessage(<Alert variant="danger">Hubo un error al buscar el usuario.</Alert>);
+        console.error('Error:', error);
+        setMessage(<Alert variant="danger">Hubo un error en la solicitud.</Alert>);
       });
   };
 
@@ -53,12 +53,11 @@ const UserSearch = () => {
         return response.json();
       })
       .then((data) => {
-        // Handle the fetched books data (if needed)
         console.log(data);
         setMessage(<Alert variant="success">Libros del usuario obtenidos correctamente.</Alert>);
       })
       .catch((error) => {
-        console.error('Error al obtener los datos de los libros:', error);
+        console.error('Error:', error);
         setMessage(<Alert variant="danger">Hubo un error al obtener los libros del usuario.</Alert>);
       });
   };

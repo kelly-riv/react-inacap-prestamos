@@ -119,7 +119,7 @@ class Usuario(DataBase):
         try:
             self.cursor.execute(sql)
             userData = self.cursor.fetchone()
-            return userData  # return userData instead of True
+            return userData  
         except Exception as e:
             print("Error : "+str(e.args))
             self.connection.close()
