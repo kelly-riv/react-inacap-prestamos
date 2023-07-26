@@ -97,4 +97,30 @@ class Stock(DataBase):
             print(f"Error al dar de baja el libro: {str(e)}")
             return False 
 
+    def habilitarLibro(self, isbn):
+        try:
+            sql_libro = f'UPDATE libro SET disponibilidad = 1 WHERE ISBN = "{isbn}";'
+            self.cursor.execute(sql_libro)
+
+            sqlCantidadLibros = f'SELECT COUNT(*) as count FROM libro WHERE ISBN = "{isbn}";' 
+            self.cursor.execute(sqlCantidadLibros)
+
+            row = self.cursor.fetchone()
+            if row is not None:
+                cantidad = row[0]
+            else:
+                cantidad = 0
+
+            sql_stock = f'UPDATE stock SET cantidad = {cantidad} WHERE ISBN = "{isbn}";'
+            self.cursor.execute(sql_stock)
+            self.connection.commit()
+            self.getStock()
+
+            return True 
+
+        except Exception as e:
+            print(f"Error al dar de baja el libro: {str(e)}")
+            return False 
+
+
 
