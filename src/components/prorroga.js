@@ -3,7 +3,6 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function Prorroga(props) {
-    //MODAL
     const [show, setShow] = useState(false);
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();

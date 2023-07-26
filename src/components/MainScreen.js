@@ -46,6 +46,11 @@ class MainScreen extends React.Component {
             <tbody>
               <tr>
               <td>
+                  <Link to={"/UserSearch"}>
+                    <button type="button" className="btn btn-secondary">Realizar busqueda de usuarios</button>
+                  </Link>
+                </td>
+              <td>
                   <Link to={"/RegistrarEntrega"}>
                     <button type="button" className="btn btn-secondary">Registrar entrega de libro</button>
                   </Link>
