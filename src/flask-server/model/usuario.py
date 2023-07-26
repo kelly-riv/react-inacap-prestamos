@@ -125,6 +125,17 @@ class Usuario(DataBase):
             print("Error : "+str(e.args))
             self.connection.close()
             return {"success": False, "message": "Error al buscar al usuario: " + str(e)}
+    
+    def buscarLibrosUsuario(self, id_prestamo):
+        sql = f"SELECT libro.id_libro,libro.titulo FROM libro LEFT JOIN prestamo ON libro.id_libro = prestamo.id_libro WHERE prestamo.id_prestamo={id_prestamo}"
+        try:
+            self.cursor.execute(sql)
+            userBooksData = self.cursor.fetchone()
+            return True
+        except Exception as e:
+            print("Error : "+str(e.args))
+            self.connection.close()
+            return {"success": False, "message": "Error al buscar al usuario: " + str(e)}
         
 user = Usuario()
 user.obtener_tipo_usuario("21439593-3")
