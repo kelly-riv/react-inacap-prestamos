@@ -1,23 +1,32 @@
 from .base import DataBase
-from datetime import date
+from datetime import datetime
 
 class Prorroga(DataBase):
        
     def newProrroga(self, fechaTermino, id_libro, id_prestamo):
         docente = self.getDocente(id_prestamo)
         n_prorroga = self.getNumProrrogas(id_prestamo)
+        fechaTermino=str(fechaTermino)
+        fechaInicio = str(self.getFechaTerminoPrestamo(id_prestamo))
+        date_format = "%Y-%m-%d"
 
-        if docente == 0 and n_prorroga >= 1:
-            print("Error: Ya ha solicitado una prórroga.")
-            return False
+        date_inicio = datetime.strptime(fechaInicio,date_format)
+        date_final = datetime.strptime(fechaTermino,date_format)
+        dias_prorroga = date_final-date_inicio
 
-        if docente == 1 and n_prorroga >= 3:
-            print("Error: Ha alcanzado el límite de prórrogas consecutivas.")
+        if docente == 0:
+            if n_prorroga >= 1:
+                print("Error: Ya ha solicitado una prórroga.")
+                return False
+            elif dias_prorroga.days >3:
+                print("Error, la prorroga supera el límite de 3 días")
+                return False
+
+        if docente == 1:
+            if n_prorroga >= 3:
+                print("Error: Ha alcanzado el límite de prórrogas consecutivas.")
             return False
         try:
-            self.cursor.execute(f"SELECT fecha_termino FROM prestamo WHERE id_prestamo = {id_prestamo}")
-            fechaInicio = self.cursor.fetchone()[0]
-            print(fechaInicio)
             self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `prestamo_id`) VALUES ('{fechaInicio}', '{fechaTermino}', {id_prestamo})")
             self.cursor.execute(f"UPDATE `prestamo` SET `multa_total` = 0, fecha_termino ='{fechaTermino}' WHERE `id_prestamo` = {id_prestamo}")
             self.connection.commit()
@@ -27,6 +36,16 @@ class Prorroga(DataBase):
             self.connection.close()
 
         return False
+    
+    def getFechaTerminoPrestamo(self,id_prestamo):
+        data = ""
+        sql = f"SELECT fecha_termino FROM prestamo WHERE id_prestamo = {id_prestamo};"
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchone()
+            return data[0]
+        except Exception as e:
+            raise
     
     def getDocente(self,id_prestamo):
         data = ""
