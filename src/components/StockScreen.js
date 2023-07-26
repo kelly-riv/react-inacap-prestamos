@@ -92,12 +92,13 @@ const StockScreen = () => {
                                 <td>{libro.titulo}</td>
                                 <td>{libro.ISBN}</td>
                                 <td>{libro.condicion === 1 ? "Mal estado" : "Buen estado"}</td>
-                                <td>{libro.disponibilidad === 1 ? "No Disponible" : "Disponible"}</td>
+                                <td>{libro.disponibilidad === 1 ? "Disponible" : "No Disponible"}</td>
                                 <td>
-                                    <button
+                                 <button
                                         type="button"
                                         className="btn btn-danger"
                                         onClick={() => handleOpenModal(libro.ISBN)}
+                                        disabled={libro.disponibilidad === 0} 
                                     >
                                         Dar de baja
                                     </button>
