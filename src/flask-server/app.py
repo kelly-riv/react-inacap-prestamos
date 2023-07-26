@@ -281,6 +281,8 @@ def insertar_prorroga():
     return jsonify(error)
 
 #Manejo de busqueda de usuarios
+
+
 @app.route('/realizar_busqueda_usuarios', methods=['POST'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def realizar_busqueda_usuarios():
@@ -290,27 +292,27 @@ def realizar_busqueda_usuarios():
         datos_user = usuario.buscarUsuario(rut)
         if datos_user:
             datos_user_json = {'rut': datos_user[0], 'nombre': datos_user[1], 'email': datos_user[2], 'telefono': datos_user[3]}
-            print(datos_user_json)
-            return jsonify(datos_user_json)
+            return jsonify([datos_user_json])
         else:
             return jsonify([]) 
     except Exception as e:
         app.logger.error(f"Error al obtener libros en esa fecha")
         return jsonify({'message': 'Error al realizar prestamo'})
 
-
 @app.route('/obtener_libros_usuario', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_libros_usuario():
     data = request.get_json()
-    fecha = data.get('loanDate')
+    rut = data.get('rut')
     try:
-        lista_prestamos = prestamo.getListaPrestamosFecha(fecha)
-        prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'multa_total': p.multa_total} for p in lista_prestamos]
-        return jsonify(prestamos_json)
+        libros_data = usuario.buscarLibrosUsuario(rut)
+        libros_json = [{'id_libro': libro[0], 'titulo': libro[1], 'ISBN': libro[2]} for libro in libros_data]
+        print(libros_json)
+        return jsonify(libros_json)
     except Exception as e:
-        app.logger.error(f"Error al obtener libros en esa fecha")
-        return jsonify({'message':'Error al realizar prestamo'})
+        app.logger.error(f"Error al obtener libros del usuario: {str(e)}")
+        return jsonify({'message': 'Error al obtener libros del usuario'})
+
 
 
 if __name__ == '__main__':

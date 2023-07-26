@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Form, InputGroup, Alert } from 'react-bootstrap';
+import { Button, Form, InputGroup, Alert, Modal } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
 const UserSearch = () => {
   const [dataUser, setDataUser] = useState([]);
   const [rut, setRut] = useState('');
   const [message, setMessage] = useState(null);
-
-  const navigate = useNavigate();
+  const [userBooks, setUserBooks] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   const handleChangeRut = (event) => {
     if (event.target.name === 'rut') {
@@ -23,13 +23,12 @@ const UserSearch = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.length == 0) {
-          setDataUser(data[0]);
-          alert(dataUser)
-          setMessage(<Alert variant="warning">Usuario no encontrado.</Alert>);
-         } else {
-          setDataUser(data); 
+        if (Array.isArray(data)) {
+          setDataUser(data);
           setMessage(<Alert variant="success">Usuario encontrado correctamente.</Alert>);
+        } else {
+          setDataUser([]);
+          setMessage(<Alert variant="warning">Usuario no encontrado.</Alert>);
         }
       })
       .catch((error) => {
@@ -38,28 +37,26 @@ const UserSearch = () => {
       });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmitBooks = (rut) => {
     fetch('http://localhost:3001/obtener_libros_usuario', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ rut }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setMessage(<Alert variant="success">Libros del usuario obtenidos correctamente.</Alert>);
+        setUserBooks(data);
+        setShowModal(true); 
       })
       .catch((error) => {
         console.error('Error:', error);
-        setMessage(<Alert variant="danger">Hubo un error al obtener los libros del usuario.</Alert>);
       });
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); 
   };
 
   return (
@@ -93,26 +90,53 @@ const UserSearch = () => {
               </tr>
             </thead>
             <tbody>
-              
-                <tr key={dataUser.rut}>
-                  <td>{dataUser.rut}</td>
-                  <td>{dataUser.nombre}</td>
-                  <td>{dataUser.email}</td>
-                  <td>{dataUser.telefono}</td>
+              {dataUser.map((user) => (
+                <tr key={user.rut}>
+                  <td>{user.rut}</td>
+                  <td>{user.nombre}</td>
+                  <td>{user.email}</td>
+                  <td>{user.telefono}</td>
                   <td>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleSubmitBooks(dataUser.rut)}
-                    >
+                    <Button variant="danger" onClick={() => handleSubmitBooks(user.rut)}>
                       Ver Libros
                     </Button>
                   </td>
                 </tr>
-              
+              ))}
             </tbody>
           </table>
         </div>
       </center>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Libros del Usuario</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>ID Libro</th>
+                <th>Título</th>
+                <th>ISBN</th>
+              </tr>
+            </thead>
+            <tbody>
+              {userBooks.map((book) => (
+                <tr key={book.id_libro}>
+                  <td>{book.id_libro}</td>
+                  <td>{book.titulo}</td>
+                  <td>{book.ISBN}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
