@@ -97,7 +97,7 @@ const StockScreen = () => {
         },
         body: JSON.stringify({
           isbn: selectedBook,
-          isDamaged: isDamaged,
+          is_damaged: isDamaged, // Corrected the property name to match the backend.
         }),
       });
 

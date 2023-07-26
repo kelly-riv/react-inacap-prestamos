@@ -2,7 +2,7 @@ from .base import DataBase
 
 class Stock(DataBase):
     
-    def __init__(self, libro="", ISBN="", cantidad=0,cantidadReal=0) -> None:
+    def __init__(self, libro="", ISBN="", cantidad=0, cantidadReal=0) -> None:
         super().__init__()
         self.titulo = libro
         self.ISBN = ISBN
@@ -68,7 +68,6 @@ class Stock(DataBase):
             return False
 
     def darBajaLibro(self, isbn, is_damaged):
-            
         if is_damaged == True:
             condicion = 0
         else:
@@ -89,8 +88,8 @@ class Stock(DataBase):
             sql_stock = f'UPDATE stock SET cantidad = {cantidad} WHERE ISBN = "{isbn}";'
             self.cursor.execute(sql_stock)
             self.connection.commit()
-            self.getStock()
-
+            self.updateStock(isbn)
+            
             return True 
 
         except Exception as e:
@@ -114,12 +113,12 @@ class Stock(DataBase):
             sql_stock = f'UPDATE stock SET cantidad = {cantidad} WHERE ISBN = "{isbn}";'
             self.cursor.execute(sql_stock)
             self.connection.commit()
-            self.getStock()
+            self.updateStock(isbn)
 
             return True 
 
         except Exception as e:
-            print(f"Error al dar de baja el libro: {str(e)}")
+            print(f"Error al habilitar el libro: {str(e)}")
             return False 
         
     def updateStock(self, isbn):
@@ -162,16 +161,16 @@ class Stock(DataBase):
                 nuevaCantidad = cantidadActual + cantidad
                 sql_update = f'UPDATE `stock` SET `cantidad` = {nuevaCantidad} WHERE `ISBN` = "{isbn}"'
                 self.cursor.execute(sql_update)
-                self.updateStock()
+                self.updateStock(isbn)
             else: 
                 sql_insert = f'INSERT INTO `stock` (`ISBN`, `cantidad`) VALUES ("{isbn}", {cantidad})'
                 self.cursor.execute(sql_insert)
-                self.updateStock()
+                self.updateStock(isbn)
 
             for _ in range(cantidad):
                 sql_insert_libro = f'INSERT INTO `libro` (`titulo`, `autor`, `editorial`, `ISBN`, `anio_publicacion`) VALUES ("{titulo}", "{autor}", "{editorial}", "{isbn}", {anio_publicacion})'
                 self.cursor.execute(sql_insert_libro)
-                self.updateStock()
+                self.updateStock(isbn)
             
             self.connection.commit()
 
@@ -180,7 +179,3 @@ class Stock(DataBase):
         except Exception as e:
             print(f"Error al registrar el libro: {str(e)}")
             return False
-
-
-
-

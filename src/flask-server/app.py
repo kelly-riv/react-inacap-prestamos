@@ -27,6 +27,8 @@ rut_encargado = ""
 rut_usuario = ""
 tipo_usuario = 0
 
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 def hashing (text):
     textUtf8 = text.encode("utf-8")
     hash = hashlib.md5(textUtf8)
@@ -56,17 +58,16 @@ def obtener_prestamos_prorroga():
 ##INSERCIÓN DE PRÉSTAMOS
 
 @app.route('/insertar_prestamos', methods=['POST'])
-@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
-
+@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def insertar_prestamo():
     data = request.get_json()
     fecha_inicio = data.get('startDate')
     fecha_devolucion = data.get('endDate')
     date_format = "%Y-%m-%d"
 
-    date_inicio = datetime.strptime(fecha_inicio,date_format)
-    date_final = datetime.strptime(fecha_devolucion,date_format)
-    time_difference = date_final-date_inicio
+    date_inicio = datetime.strptime(fecha_inicio, date_format)
+    date_final = datetime.strptime(fecha_devolucion, date_format)
+    time_difference = date_final - date_inicio
 
     global rut_usuario
     id_User = usuario.getIdUsuario(rut_usuario)
@@ -74,35 +75,39 @@ def insertar_prestamo():
     tipo_usuario = usuario.getDocente(rut_usuario)
     id_libros = data.get('selectedBooks')
     if str(id_libros) == "[]":
-        return jsonify({'message': 'Error al realizar el prestamo, no se seleccionaron libros'})
-    libros_previos = prestamo.getLibrosEnPrestamo(id_libros[0][0],id_User)
+        return jsonify({'message': 'Error al realizar el préstamo, no se seleccionaron libros'})
+
+    libros_previos = prestamo.getLibrosEnPrestamo(id_libros[0][0], id_User)
     if libros_previos is not None:
-        return jsonify({'message': 'Error al realizar el prestamo, este usuario ya posee este libro en préstamo'})
+        return jsonify({'message': 'Error al realizar el préstamo, este usuario ya posee este libro en préstamo'})
+
     multas = prestamo.getMultasUser(id_User)
     if multas is not None:
-        return jsonify({'message': 'Error al realizar el prestamo, este usuario tiene deudas en el sistema'})
+        return jsonify({'message': 'Error al realizar el préstamo, este usuario tiene deudas en el sistema'})
 
     if tipo_usuario == 0:
-        if prestamo.getCantidadPrestamos(id_User) >=4:
-            return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede tener más de 4 libros'})
-        if time_difference.days>7:
-            return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de más de 7 días'})
-
+        if prestamo.getCantidadPrestamos(id_User) >= 4:
+            return jsonify({'message': 'Error al realizar el préstamo, este usuario no puede tener más de 4 libros'})
+        if time_difference.days > 7:
+            return jsonify({'message': 'Error al realizar el préstamo, este usuario no puede solicitar préstamos de más de 7 días'})
     else:
-        if time_difference.days<7:
-            return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de menos de 7 días'})
-        if time_difference.days>20:
-            return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de más de 20 días'})
+        if time_difference.days < 7:
+            return jsonify({'message': 'Error al realizar el préstamo, este usuario no puede solicitar préstamos de menos de 7 días'})
+        if time_difference.days > 20:
+            return jsonify({'message': 'Error al realizar el préstamo, este usuario no puede solicitar préstamos de más de 20 días'})
+
     global rut_encargado
     id_encargado = encargado.getEncargadoId(rut_encargado)
     for libro in id_libros:
         for libro_id in libro:
-            agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado,libro_id)
+            agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado, libro_id)
             prestamo.setNoDisponible(libro_id)
             if agregar_prestamo:
-                prestamo.getMultas()
-                return jsonify({'message': f'Prestamo realizado correctamente, fecha de entrega: {date_final}'})
-    return jsonify({'message': 'Error al realizar el prestamo'})
+                # Obtenemos la lista de préstamos actualizada
+                lista_prestamos_actualizada = prestamo.getListaPrestamos()
+                prestamos_json_actualizados = [{'id_prestamo': p[0], 'fecha_inicio': p[1], 'fecha_devolucion': p[2], 'id_user': p[3], 'estado': p[4], 'codigo_libro': p[5]} for p in lista_prestamos_actualizada]
+                return jsonify({'message': f'Prestamo realizado correctamente, fecha de entrega: {date_final}', 'prestamos': prestamos_json_actualizados})
+    return jsonify({'message': 'Error al realizar el préstamo'})
 
 
 ##VERIFICACIÓN DE ENCARGADOS
@@ -189,7 +194,6 @@ def dar_baja_libro():
 @app.route('/obtener_stock', methods=['GET'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def obtener_stock_libros():
-    #stock.updateCantidades() 
     lista_libros_stock = stock.getStock()
     stock_json = [{'id_libro': s[0], 'titulo': s[1], 'ISBN': s[4], 'cantidad': s[3], 'condicion': s[6], 'disponibilidad':s[5]} for s in lista_libros_stock]
     return jsonify(stock_json)
