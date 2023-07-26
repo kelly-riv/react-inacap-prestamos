@@ -40,7 +40,7 @@ class Libro(DataBase):
         return exito
     
     def getDisponibilidadPrestamo(self):
-        sql = "SELECT DISTINCT libro.id_libro, stock.cantidad, libro.titulo FROM `stock`  LEFT JOIN libro ON stock.ISBN = libro.ISBN WHERE libro.disponibilidad=1 AND libro.condicion=0;"
+        sql = "SELECT DISTINCT libro.id_libro, stock.cantidad, libro.titulo FROM `stock`  LEFT JOIN libro ON stock.ISBN = libro.ISBN WHERE libro.disponibilidad=1 AND libro.condicion=0 GROUP BY libro.ISBN;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()

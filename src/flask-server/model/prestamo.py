@@ -74,6 +74,22 @@ class Prestamo(DataBase):
             return prestamos
         except Exception as e:
             raise
+
+    def getListaPrestamosProrroga(self):
+        data = ""
+        sql = "SELECT id_prestamo, fecha_inicio, fecha_termino, multa_total FROM `prestamo` WHERE fecha_termino >= current_date() ORDER BY fecha_inicio ASC LIMIT 20;"
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            prestamos = []
+            for value in data:
+                prestamo = (value[0], value[1], value[2], value[3])
+                prestamos.append(prestamo)
+            self.prestamos = prestamos
+            return prestamos
+        except Exception as e:
+            raise
+
     def getListaPrestamosFecha(self,fecha):
         data = ""
         sql = "SELECT id_prestamo, fecha_inicio, fecha_devolucion, id_user, id_encargado, multa_total FROM `prestamo` WHERE fecha_inicio = '{}' ORDER BY fecha_inicio ASC;".format(fecha)
