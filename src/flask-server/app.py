@@ -181,6 +181,27 @@ def habilitar_libro():
         app.logger.error(f"Error al habilitar el libro: {str(e)}")
         return jsonify({'message': 'Error al habilitar el libro', 'error': str(e)})
 
+@app.route('/registrar_libro', methods=['POST'])
+@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
+def registrar_libro():
+    data = request.get_json()
+
+    titulo = data.get('titulo')
+    autor = data.get('autor')
+    editorial = data.get('editorial')
+    isbn = data.get('isbn')
+    year = data.get('year')
+
+    try:
+        if stock.habilitarLibro(isbn):
+            return jsonify({'message': 'Se ha habilitado el libro correctamente'})
+        else:
+            return jsonify({'message': 'Ha ocurrido un error'})
+
+    except Exception as e:
+        app.logger.error(f"Error al habilitar el libro: {str(e)}")
+        return jsonify({'message': 'Error al habilitar el libro', 'error': str(e)})
+
 ######################
 
 @app.route('/generar_reporte_fecha', methods =['POST'])
@@ -222,27 +243,15 @@ def entregar_libro():
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def insertar_prorroga():
     data = request.get_json()
+    fecha_inicio = data.get('startDate')
     fecha_termino = data.get('endDate')
     id_libro = data.get('id_libro')
     id_prestamo = data.get('id_prestamo')
-    print(fecha_termino,id_libro,id_prestamo)
 
-    if prorroga.newProrroga(fecha_termino, id_libro, id_prestamo):
+    if prorroga.newProrroga(fecha_inicio, fecha_termino, id_libro, id_prestamo):
         return jsonify({'message': 'Prórroga insertada correctamente'})
     else:
         return jsonify({'message': 'Error al insertar la prórroga'})
-
-    
-@app.route('/obtener_prestamos_prorroga', methods=['GET'])
-@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
-def obtener_prestamos_prorroga():
-    lista_prestamos = prestamo.getListaPrestamosProrroga()
-    print(lista_prestamos)
-    prestamos_json = [{'id_prestamo': l[0], 'fecha_inicio': l[1], 'fecha_termino': l[2], 'multa_total':l[3]} for l in lista_prestamos]
-    print(prestamos_json)
-    return jsonify(prestamos_json)
-
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
