@@ -7,6 +7,7 @@ from model.libros import Libro
 from model.stock import Stock
 from model.prorroga import Prorroga
 from model.base import DataBase
+import hashlib
 
 from datetime import datetime
 
@@ -25,6 +26,12 @@ rut_encargado = ""
 
 rut_usuario = ""
 tipo_usuario = 0
+
+def hashing (text):
+    textUtf8 = text.encode("utf-8")
+    hash = hashlib.md5(textUtf8)
+    hexa = hash.hexdigest()
+    return hexa
 
 @app.route('/obtener_prestamos', methods=['GET'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
@@ -103,7 +110,8 @@ def encargado_existe():
     global rut_encargado
     rut_encargado = data.get('rut')
     password = data.get('password')
-    result = encargado.encargadoExiste(rut_encargado, password)  
+    password_hash = hashing(password)
+    result = encargado.encargadoExiste(rut_encargado, password_hash)  
     return jsonify(result)
 
 @app.route('/obtener_tipo_usuario', methods=['POST'])
@@ -259,10 +267,18 @@ def insertar_prorroga():
     print(id_prestamo)
 
     response = prorroga.newProrroga(fecha_termino, id_libro, id_prestamo)
-    if 'error' in response:
-        return jsonify({'error': response['error']}), 400
+    if response == 1:
+        error = "Ya ha solicitado una prórroga."
+    elif response ==2:
+        error = "La prorroga supera el límite de 3 días."
+    elif response == 3:
+        error = "Ha alcanzado el límite de prórrogas consecutivas."
+    elif response == 4:
+        error ="Prórroga insertada correctamente"
     else:
-        return jsonify({'message': 'Prórroga insertada correctamente'}), 200
+        error = "No se ha podido realizar la prórroga"
+    
+    return jsonify(error)
 
 #Manejo de busqueda de usuarios
 @app.route('/realizar_busqueda_usuarios', methods=['POST'])
@@ -289,7 +305,11 @@ def obtener_libros_usuario():
     data = request.get_json()
     id_user = data.get('id_user')
     try:
+<<<<<<< HEAD
         usuario.buscarLibrosUsuario(id_user)
+=======
+        lista_prestamos = prestamo.getListaPrestamosFecha(fecha)
+>>>>>>> f87f560129962cd403263cdae2b994af7f3a9a01
         prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'multa_total': p.multa_total} for p in lista_prestamos]
         return jsonify(prestamos_json)
     except Exception as e:

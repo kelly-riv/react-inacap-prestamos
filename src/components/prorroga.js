@@ -64,15 +64,12 @@ function Prorroga(props) {
       })
       .then((data) => {
         console.log(data);
-        if (data.error) {
-          setErrorMessage(data.error); 
-        } else {
-          setErrorMessage(null); 
-        }
+        alert(data.error)
       })
       .catch((error) => {
         console.error('Error al insertar la prórroga:', error);
         setErrorMessage('Error al insertar la prórroga.');
+        handleClose();
       });
   };
 

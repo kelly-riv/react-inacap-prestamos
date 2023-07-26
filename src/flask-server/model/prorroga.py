@@ -9,33 +9,32 @@ class Prorroga(DataBase):
         fechaInicio = str(self.getFechaTerminoPrestamo(id_prestamo))
         date_format = "%Y-%m-%d"
 
+        print(docente,n_prorroga)
+
         date_inicio = datetime.strptime(fechaInicio, date_format)
         date_final = datetime.strptime(fechaTermino, date_format)
         dias_prorroga = date_final - date_inicio
 
         if docente == 0:
             if n_prorroga >= 1:
-                error_message = "Error: Ya ha solicitado una prórroga."
-                return {"error": error_message}
+                return 1
             elif dias_prorroga.days > 3:
-                error_message = "Error, la prorroga supera el límite de 3 días."
-                return {"error": error_message}
+                return 2
 
         if docente == 1:
             if n_prorroga >= 3:
-                error_message = "Error: Ha alcanzado el límite de prórrogas consecutivas."
-                return {"error": error_message}
+                return 3
         
         try:
             self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `prestamo_id`) VALUES ('{fechaInicio}', '{fechaTermino}', {id_prestamo})")
             self.cursor.execute(f"UPDATE `prestamo` SET `multa_total` = 0, fecha_termino ='{fechaTermino}' WHERE `id_prestamo` = {id_prestamo}")
             self.connection.commit()
-            return {"message": "Prórroga insertada correctamente"}
+            return 4
         except Exception as e:
             error_message = "Error: " + str(e.args)
             print(error_message)
             self.connection.close()
-            return {"error": error_message}
+            return 5
     
     def getFechaTerminoPrestamo(self,id_prestamo):
         data = ""
@@ -43,6 +42,8 @@ class Prorroga(DataBase):
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchone()
+            if data is None:
+                return None
             return data[0]
         except Exception as e:
             raise
@@ -53,6 +54,8 @@ class Prorroga(DataBase):
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchone()
+            if data is None:
+                return None
             return data[0]
         except Exception as e:
             raise
