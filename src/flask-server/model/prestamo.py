@@ -92,7 +92,7 @@ class Prestamo(DataBase):
 
     def getListaPrestamosFecha(self,fecha):
         data = ""
-        sql = "SELECT id_prestamo, fecha_inicio, fecha_devolucion, id_user, id_encargado, multa_total FROM `prestamo` WHERE fecha_inicio = '{}' ORDER BY fecha_inicio ASC;".format(fecha)
+        sql = "SELECT id_prestamo, fecha_inicio, fecha_termino, id_user, id_encargado, multa_total FROM `prestamo` WHERE fecha_inicio = '{}' ORDER BY fecha_inicio ASC;".format(fecha)
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
