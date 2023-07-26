@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-07-2023 a las 22:21:17
+-- Tiempo de generación: 26-07-2023 a las 20:56:53
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `react-prestamos-bd-3`
+-- Base de datos: `react-prestamos-bd`
 --
 
 -- --------------------------------------------------------
@@ -39,9 +39,9 @@ CREATE TABLE `encargado` (
 --
 
 INSERT INTO `encargado` (`id_encargado`, `nombre_usuario`, `password`, `rut`) VALUES
-(1, 'kelly_rivera', 'kelly123', '20.975.953-5'),
-(2, 'osvaldo_diaz', 'osvaldo123', '21.439.593-2'),
-(3, 'axel_mondaca', 'axel123', '20.247.757-7');
+(1, 'kelly_rivera', '872059ee9abf7170f74f41b33e41830d', '20.975.953-5'),
+(2, 'osvaldo_diaz', '3357c47fbc3568310e61b800043938fa', '21.439.593-2'),
+(3, 'axel_mondaca', 'a4db14c0e16bff27a1b402aad65bc21e', '20.247.757-7');
 
 -- --------------------------------------------------------
 
@@ -66,21 +66,21 @@ CREATE TABLE `libro` (
 
 INSERT INTO `libro` (`id_libro`, `titulo`, `autor`, `editorial`, `ISBN`, `disponibilidad`, `condicion`, `anio_publicacion`) VALUES
 (2, 'Las aventuras de Amanda y el gato del pirata', 'Flores Guerra, Lilian', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', '978-956-09719-5-1', 1, 0, 2023),
-(3, 'Ladrido inverso', 'Azzar, Ernesto', 'Un Perro Negro SPA - Ediciones Askasis', '978-956-9455-52-0', 1, 0, 2023),
+(3, 'Ladrido inverso', 'Azzar, Ernesto', 'Un Perro Negro SPA - Ediciones Askasis', '978-956-9455-52-0', 1, 1, 2023),
 (4, 'El amor por los débiles & el instinto de asesinato', 'Axat, Julián', 'Un Perro Negro SPA - Ediciones Askasis', '978-956-9455-51-3', 1, 0, 2023),
-(5, 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', '978-956-14-3003-7', 1, 0, 2022),
+(5, 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', '978-956-14-3003-7', 1, 1, 2022),
 (6, 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', '978-956-09719-3-7', 1, 0, 2022),
-(7, 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', '978-956-14-3003-7', 1, 0, 2022),
+(7, 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', '978-956-14-3003-7', 1, 1, 2022),
 (8, 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', '978-956-09719-3-7', 1, 0, 2022),
-(9, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 1, 0, 2022),
-(10, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 1, 0, 2022),
+(9, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 0, 0, 2022),
+(10, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 0, 0, 2022),
 (11, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 1, 0, 2022),
 (12, 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', '978-956-00-1555-6', 1, 0, 2007),
 (13, 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', '978-956-00-1555-6', 1, 0, 2007),
 (14, 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', '978-956-00-1555-6', 1, 0, 2007),
 (15, 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', '978-956-00-1536-5', 1, 1, 2007),
 (16, 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', '978-956-00-1536-5', 1, 0, 2007),
-(17, 'Refranes y + con alma', 'Gómez Alfonso, María del Rosario', 'Editorial Por Un Mundo Mejor Ltda.', '978-956-8234-14-0', 1, 0, 2007);
+(17, 'Refranes y + con alma', 'Gómez Alfonso, María del Rosario', 'Editorial Por Un Mundo Mejor Ltda.', '978-956-8234-14-0', 0, 0, 2007);
 
 -- --------------------------------------------------------
 
@@ -129,14 +129,14 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`ISBN`, `cantidad`) VALUES
-('978-956-00-1536-5', 2),
-('978-956-00-1555-6', 3),
+('978-956-00-1536-5', 1),
+('978-956-00-1555-6', 1),
 ('978-956-09719-3-7', 2),
 ('978-956-09719-5-1', 1),
 ('978-956-14-3003-7', 2),
 ('978-956-6211-02-0', 3),
 ('978-956-8234-14-0', 1),
-('978-956-9455-51-3', 1),
+('978-956-9455-51-3', 2),
 ('978-956-9455-52-0', 1);
 
 -- --------------------------------------------------------
@@ -235,19 +235,19 @@ ALTER TABLE `encargado`
 -- AUTO_INCREMENT de la tabla `libro`
 --
 ALTER TABLE `libro`
-  MODIFY `id_libro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_libro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamo`
 --
 ALTER TABLE `prestamo`
-  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `prorroga`
 --
 ALTER TABLE `prorroga`
-  MODIFY `id_prorroga` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_prorroga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`

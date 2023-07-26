@@ -7,6 +7,7 @@ from model.libros import Libro
 from model.stock import Stock
 from model.prorroga import Prorroga
 from model.base import DataBase
+import hashlib
 
 from datetime import datetime
 
@@ -25,6 +26,12 @@ rut_encargado = ""
 
 rut_usuario = ""
 tipo_usuario = 0
+
+def hashing (text):
+    textUtf8 = text.encode("utf-8")
+    hash = hashlib.md5(textUtf8)
+    hexa = hash.hexdigest()
+    return hexa
 
 @app.route('/obtener_prestamos', methods=['GET'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
@@ -103,7 +110,8 @@ def encargado_existe():
     global rut_encargado
     rut_encargado = data.get('rut')
     password = data.get('password')
-    result = encargado.encargadoExiste(rut_encargado, password)  
+    password_hash = hashing(password)
+    result = encargado.encargadoExiste(rut_encargado, password_hash)  
     return jsonify(result)
 
 @app.route('/obtener_tipo_usuario', methods=['POST'])
