@@ -123,7 +123,9 @@ class Prestamo(DataBase):
             data = self.cursor.fetchall()
             prestamos = []
             for value in data:
-                prestamo = (value[0], value[1], value[2], value[3])
+                fecha_inicio = value[1].strftime("%d/%m/%Y")
+                fecha_termino = value[2].strftime("%d/%m/%Y")
+                prestamo = (value[0], fecha_inicio, fecha_termino, value[3])
                 prestamos.append(prestamo)
             self.prestamos = prestamos
             return prestamos
