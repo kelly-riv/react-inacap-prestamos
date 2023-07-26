@@ -99,5 +99,3 @@ class Prorroga(DataBase):
             print("Error: " + str(e.args))
             self.connection.close()
             return False       
-
-

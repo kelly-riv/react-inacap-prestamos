@@ -37,7 +37,7 @@ def hashing (text):
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_prestamos():
     lista_prestamos = prestamo.getListaPrestamos()
-    prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'id_user': p.id_user, 'id_encargado': p.id_encargado, 'multa_total': p.multa_total} for p in lista_prestamos]
+    prestamos_json = [{'id_prestamo': p[0] , 'fecha_inicio': p[1], 'fecha_devolucion': p[2], 'id_user': p[3],'estado':p[4],'codigo_libro':p[5]} for p in lista_prestamos]
     return jsonify(prestamos_json)
 
 @app.route('/obtener_prestamos_prorroga', methods=['GET'])
@@ -315,4 +315,3 @@ def obtener_libros_usuario():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
-

@@ -82,23 +82,23 @@ function MainScreen() {
           <table className="table">
             <thead>
               <tr>
-                <th>ID Préstamo</th>
+                <th>Código préstamo</th>
+                <th>Código del libro</th>
                 <th>Fecha Inicio</th>
-                <th>Fecha Devolución</th>
-                <th>ID Usuario</th>
-                <th>ID Encargado</th>
-                <th>Multa Total</th>
+                <th>Fecha Término</th>
+                <th>RUT usuario</th>
+                <th>Estado</th>
               </tr>
             </thead>
             <tbody>
               {prestamos.map((prestamo) => (
                 <tr key={prestamo.id_prestamo}>
                   <td>{prestamo.id_prestamo}</td>
+                  <td>{prestamo.codigo_libro}</td>
                   <td>{prestamo.fecha_inicio}</td>
                   <td>{prestamo.fecha_devolucion}</td>
                   <td>{prestamo.id_user}</td>
-                  <td>{prestamo.id_encargado}</td>
-                  <td>{prestamo.multa_total}</td>
+                  <td>{prestamo.estado}</td>
                 </tr>
               ))}
             </tbody>    
