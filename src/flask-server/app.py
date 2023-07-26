@@ -162,8 +162,24 @@ def dar_baja_libro():
 def obtener_stock_libros():
     #stock.updateCantidades() 
     lista_libros_stock = stock.getStock()
-    stock_json = [{'id_libro': s[0], 'titulo': s[1], 'ISBN': s[2], 'cantidad': s[3], 'condicion': s[4], 'disponibilidad':s[5]} for s in lista_libros_stock]
+    stock_json = [{'id_libro': s[0], 'titulo': s[1], 'ISBN': s[4], 'cantidad': s[3], 'condicion': s[6], 'disponibilidad':s[5]} for s in lista_libros_stock]
     return jsonify(stock_json)
+
+@app.route('/habilitar_libro', methods=['POST'])
+@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
+def habilitar_libro():
+    data = request.get_json()
+    isbn = data.get('isbn')
+
+    try:
+        if stock.habilitarLibro(isbn):
+            return jsonify({'message': 'Se ha habilitado el libro correctamente'})
+        else:
+            return jsonify({'message': 'Ha ocurrido un error'})
+
+    except Exception as e:
+        app.logger.error(f"Error al habilitar el libro: {str(e)}")
+        return jsonify({'message': 'Error al habilitar el libro', 'error': str(e)})
 
 ######################
 
