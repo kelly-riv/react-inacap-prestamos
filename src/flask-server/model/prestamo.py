@@ -21,7 +21,6 @@ class Prestamo(DataBase):
         sql = "SELECT id_prestamo FROM `prestamo` WHERE fecha_inicio='{}' AND id_user={} AND id_encargado={} AND fecha_devolucion='{}';".format(fecha_inicio,id_user,id_encargado,fecha_devolucion)
         try:
             self.cursor.execute(sql)
-            print(data)
             data = self.cursor.fetchone()
             id_prestamo = data[0]
             return id_prestamo
@@ -52,7 +51,6 @@ class Prestamo(DataBase):
         sql = "SELECT id_prestamo FROM `prestamo` WHERE fecha_inicio='{}' AND id_user={} AND id_encargado={} AND fecha_devolucion='{}';".format(fecha_inicio,id_user,id_encargado,fecha_devolucion)
         try:
             self.cursor.execute(sql)
-            print(data)
             data = self.cursor.fetchone()
             id_prestamo = data[0]
             return id_prestamo
@@ -103,10 +101,8 @@ class Prestamo(DataBase):
             data = self.cursor.fetchone()
             fecha_actual = data[0]
             fecha_termino= data[1]
-            print(fecha_termino,fecha_actual)
             entregado = data[2]
             dias_diferencia = (fecha_actual-fecha_termino).days
-            print(dias_diferencia)
             if entregado == 1:
                 return "ENTREGADO"
             elif dias_diferencia<=0 and entregado == 0:

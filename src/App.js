@@ -6,7 +6,6 @@ import MainScreen from './components/MainScreen';
 import PaymentScreen from './components/PaymentScreen';
 import PaymentRegister from './components/PaymentRegister';
 import LoanReportForm from './components/LoanReportForm';
-import LoanRegister from './components/LoanRegister';
 import BookGive from './components/BookGive'
 
 import StockScreen from './components/StockScreen';
@@ -27,7 +26,6 @@ const App = () => {
           <Route path="/PaymentScreen" element={<PaymentScreen />} />
           <Route path="/PaymentRegister" element={<PaymentRegister />} />
           <Route path="/LoanReportForm" element={<LoanReportForm />} />
-          <Route path="/LoanRegister" element={<LoanRegister />} />
           <Route path="/StockScreen" element={<StockScreen />} />
           <Route path='/RegistrarPrestamoCompleto' element={<LoanDataRegisterComplete/>} />
           <Route path='/RegistrarEntrega' element={<BookGive/>} />

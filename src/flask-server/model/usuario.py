@@ -138,4 +138,3 @@ class Usuario(DataBase):
 
         
 user = Usuario()
-user.obtener_tipo_usuario("21439593-3")

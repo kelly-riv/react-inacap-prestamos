@@ -33,6 +33,9 @@ def hashing (text):
     hexa = hash.hexdigest()
     return hexa
 
+
+##OBTENER LISTADO DE PRESTAMOS
+
 @app.route('/obtener_prestamos', methods=['GET'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_prestamos():
@@ -40,12 +43,17 @@ def obtener_prestamos():
     prestamos_json = [{'id_prestamo': p[0] , 'fecha_inicio': p[1], 'fecha_devolucion': p[2], 'id_user': p[3],'estado':p[4],'codigo_libro':p[5]} for p in lista_prestamos]
     return jsonify(prestamos_json)
 
+##OBTENER PRESTAMOS - ENFOQUE DE PRORROGA
+
 @app.route('/obtener_prestamos_prorroga', methods=['GET'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def obtener_prestamos_prorroga():
     lista_prestamos = prestamo.getListaPrestamosProrroga()
     prestamos_json = [{'id_prestamo': p[0], 'fecha_inicio': p[1], 'fecha_termino': p[2], 'multa_total': p[3]} for p in lista_prestamos]
     return jsonify(prestamos_json)
+
+
+##INSERCIÓN DE PRÉSTAMOS
 
 @app.route('/insertar_prestamos', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
@@ -68,7 +76,6 @@ def insertar_prestamo():
     if str(id_libros) == "[]":
         return jsonify({'message': 'Error al realizar el prestamo, no se seleccionaron libros'})
     libros_previos = prestamo.getLibrosEnPrestamo(id_libros[0][0],id_User)
-    print(libros_previos)
     if libros_previos is not None:
         return jsonify({'message': 'Error al realizar el prestamo, este usuario ya posee este libro en préstamo'})
     multas = prestamo.getMultasUser(id_User)
@@ -77,31 +84,28 @@ def insertar_prestamo():
 
     if tipo_usuario == 0:
         if prestamo.getCantidadPrestamos(id_User) >=4:
-            print("Fail")
             return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede tener más de 4 libros'})
         if time_difference.days>7:
-            print("Fail")
             return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de más de 7 días'})
 
     else:
         if time_difference.days<7:
-            print("Fail")
             return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de menos de 7 días'})
         if time_difference.days>20:
-            print("Fail")
             return jsonify({'message': 'Error al realizar el prestamo, este usuario no puede solicitar préstamos de más de 20 días'})
-    print("Continue")
     global rut_encargado
     id_encargado = encargado.getEncargadoId(rut_encargado)
     for libro in id_libros:
         for libro_id in libro:
             agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado,libro_id)
-            print("No disponible")
             prestamo.setNoDisponible(libro_id)
             if agregar_prestamo:
                 prestamo.getMultas()
                 return jsonify({'message': f'Prestamo realizado correctamente, fecha de entrega: {date_final}'})
     return jsonify({'message': 'Error al realizar el prestamo'})
+
+
+##VERIFICACIÓN DE ENCARGADOS
 
 @app.route('/encargado_existe', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
@@ -114,6 +118,8 @@ def encargado_existe():
     result = encargado.encargadoExiste(rut_encargado, password_hash)  
     return jsonify(result)
 
+##VERIFICACIÓN DE USUARIO DOCENTE
+
 @app.route('/obtener_tipo_usuario', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_tipo_usuario():
@@ -123,6 +129,8 @@ def obtener_tipo_usuario():
     docente = usuario.obtener_tipo_usuario(rut_usuario)  
     return jsonify(docente)
 
+##OBTENER LISTA DE LIBROS PARA SELECT
+
 @app.route('/obtener_libros', methods=['GET'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_libros():
@@ -131,12 +139,16 @@ def obtener_libros():
     libros_json = [{'id_libro': l[1], 'titulo': l[0], 'id_prestamo': l[2]} for l in lista_libros]
     return jsonify(libros_json)
 
+##OBTENER LAS MULTAS CALCULADAS AUTOMÁTICAMENTE
+
 @app.route('/obtener_multas',methods=['GET'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_multas():
     lista_multas = prestamo.getMultas()
     multas_json = [{'id_prestamo': p[0], 'multa_total': p[1], 'rut': p[2]} for p in lista_multas]
     return jsonify(multas_json)
+
+##REGISTRO DE PAGOS
 
 @app.route('/registrar_pago', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
@@ -152,6 +164,8 @@ def registrar_pago():
         return jsonify({'message': 'Error al registrar pago'})
     
 #MANEJO DE STOCK
+
+##DAR LIBRO DE BAJA
 
 @app.route('/dar_baja_libro', methods=['POST'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
@@ -170,7 +184,7 @@ def dar_baja_libro():
         app.logger.error(f"Error al dar de baja el libro: {str(e)}")
         return jsonify({'message': 'Error al dar de baja el libro', 'error': str(e)})
 
-
+##OBTENCIÓN DEL STOCK
     
 @app.route('/obtener_stock', methods=['GET'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
@@ -179,6 +193,8 @@ def obtener_stock_libros():
     lista_libros_stock = stock.getStock()
     stock_json = [{'id_libro': s[0], 'titulo': s[1], 'ISBN': s[4], 'cantidad': s[3], 'condicion': s[6], 'disponibilidad':s[5]} for s in lista_libros_stock]
     return jsonify(stock_json)
+
+##HABILITAR LIBROS
 
 @app.route('/habilitar_libro', methods=['POST'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
@@ -196,6 +212,8 @@ def habilitar_libro():
         app.logger.error(f"Error al habilitar el libro: {str(e)}")
         return jsonify({'message': 'Error al habilitar el libro', 'error': str(e)})
 
+##INSERTAR NUEVO LIBRO
+
 @app.route('/registrar_libro', methods=['POST'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def registrar_libro():
@@ -207,8 +225,6 @@ def registrar_libro():
     isbn = data.get('isbn')
     year = data.get('year')
 
-    print(titulo,autor,editorial,isbn,year)
-
     try:
         if stock.regLibro(isbn,titulo,autor,editorial,year):
             return jsonify({'message': 'Se ha habilitado el libro correctamente'})
@@ -219,7 +235,9 @@ def registrar_libro():
         app.logger.error(f"Error al habilitar el libro: {str(e)}")
         return jsonify({'message': 'Error al habilitar el libro', 'error': str(e)})
 
-######################
+###########REPORTES
+
+##GENERAR REPORTE POR FECHA
 
 @app.route('/generar_reporte_fecha', methods =['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
@@ -228,21 +246,21 @@ def generar_reporte_fecha():
     fecha = data.get('loanDate')
     try:
         lista_prestamos = prestamo.getListaPrestamosFecha(fecha)
-        print(lista_prestamos)
         prestamos_json = [{'id_prestamo': p[0], 'fecha_inicio': p[1], 'fecha_devolucion': p[2], 'multa_total': p[4]} for p in lista_prestamos]
-        print(prestamos_json)
         return jsonify(prestamos_json)
     except Exception as e:
         app.logger.error(f"Error al obtener libros en esa fecha")
         return jsonify({'message':'Error al realizar prestamo'})
     
+
+##MARCAR LIBRO COMO ENTREGADO
+
 @app.route('/entregar_libro', methods =['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def entregar_libro():
     data = request.get_json()
     codigo = data.get('bookCode')
     estado = libro.getDisponibilidad(codigo)
-    print(estado)
     if estado is None:
         return jsonify({'message': 'Este libro no existe'})
     if estado == 1:
@@ -254,7 +272,7 @@ def entregar_libro():
         else:
             return jsonify({'message': 'Ha ocurrido un error al devolder el libro'})
 
-#PRORROGA
+##OTORGAR PRORROGA
         
 @app.route('/insertar_prorroga', methods=['POST'])
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
@@ -263,7 +281,6 @@ def insertar_prorroga():
     fecha_termino = data.get('endDate')
     id_libro = data.get('id_libro')
     id_prestamo = data.get('id_prestamo')
-    print(id_prestamo)
 
     response = prorroga.newProrroga(fecha_termino, id_libro, id_prestamo)
     error= "Error en la prórroga"
@@ -298,6 +315,8 @@ def realizar_busqueda_usuarios():
     except Exception as e:
         app.logger.error(f"Error al obtener libros en esa fecha")
         return jsonify({'message': 'Error al realizar prestamo'})
+    
+##OBTENER LOS LIBROS DE UN USUARIO
 
 @app.route('/obtener_libros_usuario', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
