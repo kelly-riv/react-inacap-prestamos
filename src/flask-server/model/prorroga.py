@@ -9,17 +9,17 @@ class Prorroga(DataBase):
         self.cursor.execute(f"SELECT COUNT(*) FROM prestamo WHERE prestamo_id = {id_libro}")
         n_prorroga = self.cursor.fetchone()[0]
 
-        if not is_docente and n_prorroga >= 1:
+        if docente == 0 and n_prorroga >= 1:
             print("Error: Ya ha solicitado una prórroga.")
             return False
 
-        if is_docente and n_prorroga >= 3:
+        if docente == 1 and n_prorroga >= 3:
             print("Error: Ha alcanzado el límite de prórrogas consecutivas.")
             return False
         try:
-            fechaInicio = (f"SELECT fecha_termino FROM prestamo WHERE prestamo_id = {libros_prestamo_id}")
-            self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `prestamo_id`) VALUES ('{fechaInicio}', '{fechaTermino}', '{libros_prestamo_id}')")
-            self.cursor.execute(f"UPDATE `prestamo_libros` SET `multa_total` = 0 WHERE `id_prestamo_libros` = '{libros_prestamo_id}'")
+            fechaInicio = (f"SELECT fecha_termino FROM prestamo WHERE prestamo_id = {id_prestamo}")
+            self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `prestamo_id`) VALUES ('{fechaInicio}', '{fechaTermino}', {id_prestamo})")
+            self.cursor.execute(f"UPDATE `prestamo_libros` SET `multa_total` = 0, fecha_termino ='{fechaTermino}' WHERE `id_prestamo_libros` = {id_prestamo}")
             self.connection.commit()
             return True
         except Exception as e:
