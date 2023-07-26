@@ -192,8 +192,10 @@ def registrar_libro():
     isbn = data.get('isbn')
     year = data.get('year')
 
+    print(titulo,autor,editorial,isbn,year)
+
     try:
-        if stock.habilitarLibro(isbn):
+        if stock.regLibro(isbn,titulo,autor,editorial,year):
             return jsonify({'message': 'Se ha habilitado el libro correctamente'})
         else:
             return jsonify({'message': 'Ha ocurrido un error'})
