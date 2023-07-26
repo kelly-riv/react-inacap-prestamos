@@ -7,6 +7,7 @@ const StockScreen = () => {
     const [stock, setStock] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
+    const [showModal3, setShowModal3] = useState(false);
     //Datos de entrada para localhost
     const [selectedBook, setSelectedBook] = useState('');
     const [isbn, setIsbn] = useState('')
@@ -37,11 +38,18 @@ const StockScreen = () => {
         setSelectedBook(isbn);
     };
 
+    const handleOpenModal3 = () => {
+        setShowModal3(true);
+    };
+
     const handleCloseModal = () => {
         setShowModal(false);
     };
     const handleCloseModal2 = () => {
         setShowModal2(false);
+    };
+    const handleCloseModal3 = () => {
+        setShowModal3(false);
     };
 
     const handleCheckboxChange = (event) => {
@@ -107,14 +115,23 @@ const StockScreen = () => {
 
     return (
         <div>
+            <h1>Listado de Libros en Stock</h1>
+            <button
+                type="button" style={{width: '10%'}}
+                className="btn btn-danger"
+                onClick={() => handleOpenModal3()}
+                >
+                Añadir Libro
+            </button>
             <center>
                 <Link to={'/MainScreen'}>
                     <Button type="button" className="btn btn-secondary volver">
                         Volver
                     </Button>
                 </Link>
+
                 <div className="table-responsive">
-                    <h1>Listado de Libros en Stock</h1>
+                    
                     <table className="table" style={tableStyles}>
                     <thead>
                         <tr>
@@ -152,6 +169,7 @@ const StockScreen = () => {
                                     >
                                         Habilitar Libro
                                     </button>
+                                    
                                     </div>
                                 </td>
                             </tr>
@@ -197,6 +215,49 @@ const StockScreen = () => {
                             </Button>
                         </Modal.Footer>
                     </Modal>
+
+                    <Modal show={showModal3} onHide={handleCloseModal3}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Añadir Libro</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group controlId="formBookTitle">
+                                <Form.Label>Título</Form.Label>
+                                <Form.Control type="text" placeholder="Introduce el título del libro" />
+                            </Form.Group>
+
+                            <Form.Group controlId="formBookAuthor">
+                                <Form.Label>Autor</Form.Label>
+                                <Form.Control type="text" placeholder="Introduce el autor del libro" />
+                            </Form.Group>
+
+                            <Form.Group controlId="formBookPublisher">
+                                <Form.Label>Editorial</Form.Label>
+                                <Form.Control type="text" placeholder="Introduce la editorial del libro" />
+                            </Form.Group>
+
+                            <Form.Group controlId="formBookIsbn">
+                                <Form.Label>ISBN</Form.Label>
+                                <Form.Control type="text" placeholder="Introduce el ISBN del libro" />
+                            </Form.Group>
+
+                            <Form.Group controlId="formBookYear">
+                                <Form.Label>Año de Publicación (AAAA)</Form.Label>
+                                <Form.Control type="year" placeholder="Introduce el año de publicación del libro" />
+                            </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleCloseModal3}>
+                                    Cerrar
+                                </Button>
+                                <Button variant="primary" onClick={handleSubmitHab}>
+                                    Registrar Libro
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+
                 </div>
                 </center>
                 </div>
