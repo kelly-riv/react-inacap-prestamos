@@ -64,7 +64,8 @@ const StockScreen = () => {
     setIsDamaged(event.target.checked);
   };
 
-  const handleSubmitReg = async () => {
+  const handleSubmitReg = async (event) => {
+    event.preventDefault();
     try {
       const response = await fetch('http://localhost:3001/registrar_libro', {
         method: 'POST',
@@ -267,7 +268,6 @@ const StockScreen = () => {
                             <Form.Control
                             type="text"
                             name="titulo"
-                            value={newBookData.titulo}
                             onChange={handleInputChange}
                             placeholder="Introduce el título del libro"
                             />
@@ -278,7 +278,6 @@ const StockScreen = () => {
                             <Form.Control
                             type="text"
                             name="autor"
-                            value={newBookData.autor}
                             onChange={handleInputChange}
                             placeholder="Introduce el autor del libro"
                             />
@@ -289,7 +288,6 @@ const StockScreen = () => {
                             <Form.Control
                             type="text"
                             name="editorial"
-                            value={newBookData.editorial}
                             onChange={handleInputChange}
                             placeholder="Introduce la editorial del libro"
                             />
@@ -300,7 +298,6 @@ const StockScreen = () => {
                             <Form.Control
                             type="text"
                             name="isbn"
-                            value={newBookData.isbn}
                             onChange={handleInputChange}
                             placeholder="Introduce el ISBN del libro"
                             />
@@ -311,7 +308,6 @@ const StockScreen = () => {
                             <Form.Control
                             type="text"
                             name="year"
-                            value={newBookData.year}
                             onChange={handleInputChange}
                             placeholder="Introduce el año de publicación del libro"
                             />

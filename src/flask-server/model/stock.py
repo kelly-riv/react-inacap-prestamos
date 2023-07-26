@@ -101,9 +101,13 @@ class Stock(DataBase):
         try:
             sql_libro = f'UPDATE libro SET disponibilidad = 1 WHERE ISBN = "{isbn}";'
             self.cursor.execute(sql_libro)
+            self.connection.commit()
+
 
             sqlCantidadLibros = f'SELECT COUNT(*) as count FROM libro WHERE ISBN = "{isbn}";' 
             self.cursor.execute(sqlCantidadLibros)
+            self.connection.commit()
+
 
             row = self.cursor.fetchone()
             if row is not None:
