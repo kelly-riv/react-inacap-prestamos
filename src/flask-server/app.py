@@ -100,7 +100,7 @@ def insertar_prestamo():
             prestamo.setNoDisponible(libro_id)
             if agregar_prestamo:
                 prestamo.getMultas()
-                return jsonify({'message': 'Prestamo realizado correctamente'})
+                return jsonify({'message': f'Prestamo realizado correctamente, fecha de entrega: {date_final}'})
     return jsonify({'message': 'Error al realizar el prestamo'})
 
 @app.route('/encargado_existe', methods=['POST'])
