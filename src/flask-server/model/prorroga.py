@@ -3,9 +3,10 @@ from datetime import date
 
 class Prorroga(DataBase):
        
-    def newProrroga(self,fechaInicio, fechaTermino, libros_prestamo_id, user_id, is_docente):
+    def newProrroga(self, fechaTermino, id_libro, id_prestamo):
 
-        self.cursor.execute(f"SELECT n_prorroga FROM prestamo_libros WHERE id_prestamo_libros = {libros_prestamo_id}")
+        docente = (f"SELECT usuario.docente FROM `prestamo` LEFT JOIN usuario ON usuario.id_user = prestamo.id_user WHERE prestamo.id_prestamo = {id_prestamo};")
+        self.cursor.execute(f"SELECT COUNT(*) FROM prestamo WHERE prestamo_id = {id_libro}")
         n_prorroga = self.cursor.fetchone()[0]
 
         if not is_docente and n_prorroga >= 1:
@@ -16,10 +17,9 @@ class Prorroga(DataBase):
             print("Error: Ha alcanzado el límite de prórrogas consecutivas.")
             return False
         try:
-            self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `detalle_id`) VALUES ('{fechaInicio}', '{fechaTermino}', '{prestamo_id}')")
-
-            self.cursor.execute(f"UPDATE `prestamo_libros` SET `n_prorroga` = `n_prorroga` + 1 WHERE `id_prestamo_libros` = '{libros_prestamo_id}'")
-
+            fechaInicio = (f"SELECT fecha_termino FROM prestamo WHERE prestamo_id = {libros_prestamo_id}")
+            self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `prestamo_id`) VALUES ('{fechaInicio}', '{fechaTermino}', '{libros_prestamo_id}')")
+            self.cursor.execute(f"UPDATE `prestamo_libros` SET `multa_total` = 0 WHERE `id_prestamo_libros` = '{libros_prestamo_id}'")
             self.connection.commit()
             return True
         except Exception as e:
