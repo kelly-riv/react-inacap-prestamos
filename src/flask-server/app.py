@@ -317,7 +317,5 @@ def obtener_libros_usuario():
         return jsonify({'message': 'Error al obtener libros del usuario'})
 
 
-
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
