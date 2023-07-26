@@ -274,6 +274,7 @@ def realizar_busqueda_usuarios():
         datos_user = usuario.buscarUsuario(rut)
         if datos_user:
             datos_user_json = {'rut': datos_user[0], 'nombre': datos_user[1], 'email': datos_user[2], 'telefono': datos_user[3]}
+            print(datos_user_json)
             return jsonify(datos_user_json)
         else:
             return jsonify([]) 
