@@ -33,6 +33,13 @@ def obtener_prestamos():
     prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'id_user': p.id_user, 'id_encargado': p.id_encargado, 'multa_total': p.multa_total} for p in lista_prestamos]
     return jsonify(prestamos_json)
 
+@app.route('/obtener_prestamos_prorroga', methods=['GET'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+def obtener_prestamos_prorroga():
+    lista_prestamos = prestamo.getListaPrestamosProrroga()
+    prestamos_json = [{'id_prestamo': p[0], 'fecha_inicio': p[1], 'fecha_termino': p[2], 'multa_total': p[3]} for p in lista_prestamos]
+    return jsonify(prestamos_json)
+
 @app.route('/insertar_prestamos', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 
@@ -249,8 +256,9 @@ def insertar_prorroga():
     fecha_termino = data.get('endDate')
     id_libro = data.get('id_libro')
     id_prestamo = data.get('id_prestamo')
+    print(id_prestamo)
 
-    if prorroga.newProrroga(fecha_inicio, fecha_termino, id_libro, id_prestamo):
+    if prorroga.newProrroga(fecha_termino, id_libro, id_prestamo):
         return jsonify({'message': 'Prórroga insertada correctamente'})
     else:
         return jsonify({'message': 'Error al insertar la prórroga'})

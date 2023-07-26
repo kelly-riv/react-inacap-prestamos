@@ -9,10 +9,18 @@ function Prorroga(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [idProrroga,setIdProrroga] = useState('');
+    const [idLibro,setIdLibro]= useState('')
+
     const [libros, setLibros] = useState([]);
     
     const tableStyle = {
         marginTop: '2%'
+    }
+
+    const handleData = (libro) =>{
+      setIdLibro(libro.id_libro)
+      setIdProrroga(libro.id_prestamo)
     }
 
     const obtenerPrestamos = () => {
@@ -40,8 +48,8 @@ function Prorroga(props) {
         },
         body: JSON.stringify({
             endDate: endDate,
-            id_libro: libro.id_libro,
-            id_prestamo: libro.id_prestamo
+            id_libro: idLibro,
+            id_prestamo: idProrroga
         }),
       })
       .then((response) => {
@@ -60,7 +68,7 @@ function Prorroga(props) {
 
     return (
     <div>
-        <Link to={'/'}>
+        <Link to={'/MainScreen'}>
             <Button variant='secondary' className='volver'>
                 Volver
             </Button>
@@ -86,7 +94,7 @@ function Prorroga(props) {
                   <td>{libro.fecha_termino}</td>
                   <td>{libro.multa_total}</td>
                   <td>
-                    <Button variant="danger" onClick={() => {handleShow(); insertarProrroga(libro)}}>Extender Plazo</Button>
+                    <Button variant="danger" onClick={() => {handleShow(); handleData(libro)}}>Extender Plazo</Button>
                   </td>
                 </tr>
               ))}
