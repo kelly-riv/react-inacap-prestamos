@@ -101,12 +101,9 @@ class Stock(DataBase):
         try:
             sql_libro = f'UPDATE libro SET disponibilidad = 1 WHERE ISBN = "{isbn}";'
             self.cursor.execute(sql_libro)
-            self.connection.commit()
 
             sqlCantidadLibros = f'SELECT COUNT(*) as count FROM libro WHERE ISBN = "{isbn}";' 
             self.cursor.execute(sqlCantidadLibros)
-            self.connection.commit()
-
 
             row = self.cursor.fetchone()
             if row is not None:
@@ -151,7 +148,7 @@ class Stock(DataBase):
             return False
         
 
-    def regLibro(self, isbn, titulo, autor, editorial, anio_publicacion):
+    def regLibro(self, isbn, cantidad, titulo, autor, editorial, anio_publicacion):
         try:
             sql_comprobar_isbn_existe = f'SELECT * FROM stock WHERE ISBN = "{isbn}"'
             self.cursor.execute(sql_comprobar_isbn_existe)
@@ -161,16 +158,20 @@ class Stock(DataBase):
                 sqlCantidadActual = f'SELECT cantidad FROM stock WHERE ISBN = "{isbn}"'
                 self.cursor.execute(sqlCantidadActual)
                 cantidadActual = self.cursor.fetchone()[0]
-                self.updateStock(isbn)
-                
-            else: 
-                sql_insert = f'INSERT INTO `stock` (`ISBN`) VALUES ("{isbn}")'
-                self.cursor.execute(sql_insert)
-                self.updateStock(isbn)
 
-            sql_insert_libro = f'INSERT INTO `libro` (`titulo`, `autor`, `editorial`, `ISBN`, `anio_publicacion`) VALUES ("{titulo}", "{autor}", "{editorial}", "{isbn}", {anio_publicacion})'
-            self.cursor.execute(sql_insert_libro)
-            self.updateStock(isbn)
+                nuevaCantidad = cantidadActual + cantidad
+                sql_update = f'UPDATE `stock` SET `cantidad` = {nuevaCantidad} WHERE `ISBN` = "{isbn}"'
+                self.cursor.execute(sql_update)
+                self.updateStock()
+            else: 
+                sql_insert = f'INSERT INTO `stock` (`ISBN`, `cantidad`) VALUES ("{isbn}", {cantidad})'
+                self.cursor.execute(sql_insert)
+                self.updateStock()
+
+            for _ in range(cantidad):
+                sql_insert_libro = f'INSERT INTO `libro` (`titulo`, `autor`, `editorial`, `ISBN`, `anio_publicacion`) VALUES ("{titulo}", "{autor}", "{editorial}", "{isbn}", {anio_publicacion})'
+                self.cursor.execute(sql_insert_libro)
+                self.updateStock()
             
             self.connection.commit()
 

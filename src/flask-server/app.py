@@ -263,5 +263,36 @@ def insertar_prorroga():
     else:
         return jsonify({'message': 'Error al insertar la prórroga'})
 
+#Manejo de busqueda de usuarios
+@app.route('/realizar_busqueda_usuarios', methods=['POST'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+def realizar_busqueda_usuarios():
+    data = request.get_json()
+    rut = data.get('loanDate')
+    try:
+        datos_user = usuario.buscarUsuario(rut)
+        datos_user_json = [{'rut': usuario.rut, 'nombre': usuario.nombre, 'nombre': usuario.email} for u in datos_user]
+        return jsonify(datos_user_json)
+    except Exception as e:
+        app.logger.error(f"Error al obtener libros en esa fecha")
+        return jsonify({'message':'Error al realizar prestamo'})
+
+@app.route('/obtener_libros_usuario', methods=['POST'])
+@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+def obtener_libros_usuario():
+    data = request.get_json()
+    fecha = data.get('loanDate')
+    try:
+        lista_prestamos = prestamo.getListaPrestamosFecha(fecha)
+        print(lista_prestamos)
+        prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'multa_total': p.multa_total} for p in lista_prestamos]
+        print(prestamos_json)
+        return jsonify(prestamos_json)
+    except Exception as e:
+        app.logger.error(f"Error al obtener libros en esa fecha")
+        return jsonify({'message':'Error al realizar prestamo'})
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
+
