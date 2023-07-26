@@ -265,17 +265,21 @@ def insertar_prorroga():
 
 #Manejo de busqueda de usuarios
 @app.route('/realizar_busqueda_usuarios', methods=['POST'])
-@cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
+@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def realizar_busqueda_usuarios():
     data = request.get_json()
-    rut = data.get('loanDate')
+    rut = data.get('rut')
     try:
         datos_user = usuario.buscarUsuario(rut)
-        datos_user_json = [{'rut': usuario.rut, 'nombre': usuario.nombre, 'nombre': usuario.email} for u in datos_user]
-        return jsonify(datos_user_json)
+        if datos_user:
+            datos_user_json = {'rut': datos_user[0], 'nombre': datos_user[1], 'email': datos_user[2], 'telefono': datos_user[3]}
+            return jsonify(datos_user_json)
+        else:
+            return jsonify([]) 
     except Exception as e:
         app.logger.error(f"Error al obtener libros en esa fecha")
-        return jsonify({'message':'Error al realizar prestamo'})
+        return jsonify({'message': 'Error al realizar prestamo'})
+
 
 @app.route('/obtener_libros_usuario', methods=['POST'])
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])

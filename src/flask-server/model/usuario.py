@@ -116,11 +116,10 @@ class Usuario(DataBase):
         
     def buscarUsuario(self, rut):
         sql = f"SELECT rut, nombre, email, telefono FROM usuario WHERE rut = '{rut}' "
-        sqlLoanData = f"SELECT id_libro, id_user FROM prestamo WHERE "
         try:
             self.cursor.execute(sql)
             userData = self.cursor.fetchone()
-            return True
+            return userData  
         except Exception as e:
             print("Error : "+str(e.args))
             self.connection.close()
