@@ -29,7 +29,7 @@ class Stock(DataBase):
             return False
 
     def getStock(self):
-        sql = "SELECT libro.id_libro, libro.titulo, libro.ISBN, stock.cantidad, libro.condicion, libro.disponibilidad FROM libro LEFT JOIN stock ON libro.ISBN=stock.ISBN;"
+        sql = "SELECT * FROM libro;"
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
