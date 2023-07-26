@@ -9,6 +9,10 @@ import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+import WaveFragment from "./fragments/WaveFragment.js";
+
+import wave from "../assets/images/wave.svg"
+
 function LoginScreen() {
   const inputStyle = {
     width: '250px',
@@ -59,8 +63,10 @@ function LoginScreen() {
   }
 
   return (
-    <main>
-      <h1>¡Bienvenido!</h1>
+    <>
+    <main className='login'>
+      <h1>Bienvenido al servicio de préstamo de libros</h1>
+      <br/>
 
       <CarouselFragment
         img1={InacapImage1}
@@ -69,6 +75,7 @@ function LoginScreen() {
       />
       <img src={LogoInacap} style={LogoInacapStyles} alt="Logo Inacap" />
       <br></br>
+      <h2>Para continuar, inicie sesión</h2>
       <form className='LoginForm' onSubmit={handleSubmit}>
         <input
           style={inputStyle}
@@ -98,6 +105,12 @@ function LoginScreen() {
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       </form>
     </main>
+    <footer>
+      
+    <WaveFragment image={wave} />
+
+    </footer>
+    </>
   );
 }
 

@@ -32,6 +32,7 @@ class PaymentScreen extends React.Component {
 
   render() {
     return (
+      <div className='principal'>
       <center >
         <Link to={"/MainScreen"}>
           <button type="button" className="btn btn-secondary volver">Volver</button>
@@ -75,6 +76,7 @@ class PaymentScreen extends React.Component {
           </div>
         </div>
       </center>
+      </div>
     );
   }
 }

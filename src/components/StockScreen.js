@@ -154,7 +154,7 @@ const StockScreen = () => {
   };
 
   return (
-    <div>
+    <div className='principal'>
       <h1>Listado de Libros en Stock</h1>
       <button
         type="button"

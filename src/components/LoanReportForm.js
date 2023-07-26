@@ -66,7 +66,7 @@ function LoanReportForm() {
   };
 
   return (
-    <main>
+    <main className='principal'>
       <Link to={"/MainScreen"}>
         <button type="button" className="btn btn-secondary volver" >Volver</button>
       </Link>

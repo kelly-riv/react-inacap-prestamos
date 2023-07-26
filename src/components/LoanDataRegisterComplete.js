@@ -100,7 +100,8 @@ function LoanDataRegisterComplete() {
   };
 
   return (
-    <main>
+    <main className='principal'>
+      <h1>Ingrese los datos para registrar el préstamo</h1><br/>
       <button type="button" className="btn btn-secondary volver" onClick={() => navigate("/MainScreen")}>Volver</button>
       <form className='form'>
         <div className="input-group mb-3">
