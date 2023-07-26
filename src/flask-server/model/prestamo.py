@@ -199,7 +199,7 @@ class Prestamo(DataBase):
             raise
 
     def registrarPagoMulta(self,id_prestamo):
-        sql = f"UPDATE prestamo SET multa_total = 0 WHERE id_prestamo = {id_prestamo}"
+        sql = f"UPDATE prestamo SET multa_total = 0, entregado = 1, fecha_entrega= current_date()  WHERE id_prestamo = {id_prestamo};"
         try:
             self.cursor.execute(sql)
             self.connection.commit()
