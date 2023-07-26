@@ -260,13 +260,13 @@ def entregar_libro():
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def insertar_prorroga():
     data = request.get_json()
-    fecha_inicio = data.get('startDate')
     fecha_termino = data.get('endDate')
     id_libro = data.get('id_libro')
     id_prestamo = data.get('id_prestamo')
     print(id_prestamo)
 
     response = prorroga.newProrroga(fecha_termino, id_libro, id_prestamo)
+    error= "Error en la prórroga"
     if response == 1:
         error = "Ya ha solicitado una prórroga."
     elif response ==2:
