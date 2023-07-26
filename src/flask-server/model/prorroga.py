@@ -6,36 +6,37 @@ class Prorroga(DataBase):
     def newProrroga(self, fechaTermino, id_libro, id_prestamo):
         docente = self.getDocente(id_prestamo)
         n_prorroga = self.getNumProrrogas(id_prestamo)
-        fechaTermino=str(fechaTermino)
+        fechaTermino = str(fechaTermino)
         fechaInicio = str(self.getFechaTerminoPrestamo(id_prestamo))
         date_format = "%Y-%m-%d"
 
-        date_inicio = datetime.strptime(fechaInicio,date_format)
-        date_final = datetime.strptime(fechaTermino,date_format)
-        dias_prorroga = date_final-date_inicio
+        date_inicio = datetime.strptime(fechaInicio, date_format)
+        date_final = datetime.strptime(fechaTermino, date_format)
+        dias_prorroga = date_final - date_inicio
 
         if docente == 0:
             if n_prorroga >= 1:
-                print("Error: Ya ha solicitado una prórroga.")
-                return False
-            elif dias_prorroga.days >3:
-                print("Error, la prorroga supera el límite de 3 días")
-                return False
+                error_message = "Error: Ya ha solicitado una prórroga."
+                return {"error": error_message}
+            elif dias_prorroga.days > 3:
+                error_message = "Error, la prorroga supera el límite de 3 días."
+                return {"error": error_message}
 
         if docente == 1:
             if n_prorroga >= 3:
-                print("Error: Ha alcanzado el límite de prórrogas consecutivas.")
-            return False
+                error_message = "Error: Ha alcanzado el límite de prórrogas consecutivas."
+                return {"error": error_message}
+        
         try:
             self.cursor.execute(f"INSERT INTO `prorroga` (`fecha_inicio`, `fecha_termino`, `prestamo_id`) VALUES ('{fechaInicio}', '{fechaTermino}', {id_prestamo})")
             self.cursor.execute(f"UPDATE `prestamo` SET `multa_total` = 0, fecha_termino ='{fechaTermino}' WHERE `id_prestamo` = {id_prestamo}")
             self.connection.commit()
-            return True
+            return {"message": "Prórroga insertada correctamente"}
         except Exception as e:
-            print("Error : "+str(e.args))
+            error_message = "Error: " + str(e.args)
+            print(error_message)
             self.connection.close()
-
-        return False
+            return {"error": error_message}
     
     def getFechaTerminoPrestamo(self,id_prestamo):
         data = ""

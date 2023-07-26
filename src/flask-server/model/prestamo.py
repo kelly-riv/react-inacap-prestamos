@@ -185,8 +185,6 @@ class Prestamo(DataBase):
         date_format = "%Y-%m-%d"
 
         for multa in multas:
-            """ fecha_actual = datetime.strptime(multa[2],date_format)
-            fecha_termino = datetime.strptime(multa[1],date_format) """
             dias = multa[2]-multa[1]
             if dias.days>1:
                 multa_total = dias.days * 1000
