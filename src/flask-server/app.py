@@ -229,7 +229,7 @@ def generar_reporte_fecha():
     try:
         lista_prestamos = prestamo.getListaPrestamosFecha(fecha)
         print(lista_prestamos)
-        prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'multa_total': p.multa_total} for p in lista_prestamos]
+        prestamos_json = [{'id_prestamo': p[0], 'fecha_inicio': p[1], 'fecha_devolucion': p[2], 'multa_total': p[4]} for p in lista_prestamos]
         print(prestamos_json)
         return jsonify(prestamos_json)
     except Exception as e:

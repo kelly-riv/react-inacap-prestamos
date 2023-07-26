@@ -78,6 +78,24 @@ class Prestamo(DataBase):
         except Exception as e:
             raise
 
+    def getListaPrestamosFecha(self, fecha):
+        data = ""
+        sql = f"SELECT prestamo.id_prestamo, prestamo.fecha_inicio, prestamo.fecha_termino, usuario.rut, prestamo.id_libro FROM `prestamo` LEFT JOIN usuario ON prestamo.id_user = usuario.id_user  WHERE fecha_inicio = '{fecha}' ORDER BY fecha_inicio ASC LIMIT 20;"
+        try:
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            prestamos = []
+            for value in data:
+                estado = self.getEstado(value[0])
+                fecha_inicio = value[1].strftime("%d/%m/%Y")
+                fecha_termino = value[2].strftime("%d/%m/%Y")
+                prestamo = (value[0], fecha_inicio, fecha_termino, value[3],estado,value[4])
+                prestamos.append(prestamo)
+            self.prestamos = prestamos
+            return prestamos
+        except Exception as e:
+            raise
+
     def getEstado(self,id_prestamo):
         sql = f"SELECT CURRENT_DATE,fecha_termino,entregado FROM prestamo WHERE id_prestamo = {id_prestamo};"
         try:
@@ -115,23 +133,6 @@ class Prestamo(DataBase):
             return prestamos
         except Exception as e:
             raise
-
-    def getListaPrestamosFecha(self,fecha):
-        data = ""
-        sql = "SELECT id_prestamo, fecha_inicio, fecha_termino, id_user, id_encargado, multa_total FROM `prestamo` WHERE fecha_inicio = '{}' ORDER BY fecha_inicio ASC;".format(fecha)
-        try:
-            self.cursor.execute(sql)
-            data = self.cursor.fetchall()
-            prestamos = []
-            for value in data:
-                prestamo = Prestamo(value[0], value[1], value[2], value[3], value[4], value[5])
-                prestamos.append(prestamo)
-            self.prestamos = prestamos
-            print(prestamos)
-            return prestamos
-        except Exception as e:
-            raise
-
    
 
     def getCantidadPrestamos(self,id_user):
