@@ -23,13 +23,13 @@ const UserSearch = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        if (Array.isArray(data) && data.length > 0) {
+        if (data.length == 0) {
+          setDataUser(data[0]);
+          alert(dataUser)
+          setMessage(<Alert variant="warning">Usuario no encontrado.</Alert>);
+         } else {
           setDataUser(data); 
           setMessage(<Alert variant="success">Usuario encontrado correctamente.</Alert>);
-        } else {
-          setDataUser([]);
-          setMessage(<Alert variant="warning">Usuario no encontrado.</Alert>);
         }
       })
       .catch((error) => {
@@ -93,22 +93,22 @@ const UserSearch = () => {
               </tr>
             </thead>
             <tbody>
-              {dataUser.map((user) => (
-                <tr key={user.rut}>
-                  <td>{user.rut}</td>
-                  <td>{user.nombre}</td>
-                  <td>{user.email}</td>
-                  <td>{user.telefono}</td>
+              
+                <tr key={dataUser.rut}>
+                  <td>{dataUser.rut}</td>
+                  <td>{dataUser.nombre}</td>
+                  <td>{dataUser.email}</td>
+                  <td>{dataUser.telefono}</td>
                   <td>
                     <Button
                       variant="danger"
-                      onClick={() => handleSubmitBooks(user.rut)}
+                      onClick={() => handleSubmitBooks(dataUser.rut)}
                     >
                       Ver Libros
                     </Button>
                   </td>
                 </tr>
-              ))}
+              
             </tbody>
           </table>
         </div>
