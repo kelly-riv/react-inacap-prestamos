@@ -303,14 +303,18 @@ def realizar_busqueda_usuarios():
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def obtener_libros_usuario():
     data = request.get_json()
-    fecha = data.get('loanDate')
+    id_user = data.get('id_user')
     try:
+<<<<<<< HEAD
+        usuario.buscarLibrosUsuario(id_user)
+=======
         lista_prestamos = prestamo.getListaPrestamosFecha(fecha)
+>>>>>>> f87f560129962cd403263cdae2b994af7f3a9a01
         prestamos_json = [{'id_prestamo': p.id_prestamo, 'fecha_inicio': p.fecha_inicio, 'fecha_devolucion': p.fecha_devolucion, 'multa_total': p.multa_total} for p in lista_prestamos]
         return jsonify(prestamos_json)
     except Exception as e:
-        app.logger.error(f"Error al obtener libros en esa fecha")
-        return jsonify({'message':'Error al realizar prestamo'})
+        app.logger.error(f"Error al obtener libros del usuario")
+        return jsonify({'message':'Error al obtener libros del usuario'})
 
 
 if __name__ == '__main__':
