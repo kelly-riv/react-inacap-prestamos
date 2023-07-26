@@ -306,12 +306,16 @@ def obtener_libros_usuario():
     rut = data.get('rut')
     try:
         libros_data = usuario.buscarLibrosUsuario(rut)
-        libros_json = [{'id_libro': libro[0], 'titulo': libro[1], 'ISBN': libro[2]} for libro in libros_data]
-        print(libros_json)
-        return jsonify(libros_json)
+        if libros_data:
+            libros_json = [{'id_libro': libro[0], 'titulo': libro[1], 'ISBN': libro[2]} for libro in libros_data]
+            print(libros_json)
+            return jsonify(libros_json)
+        else:
+            return jsonify({'message': 'No se encontraron libros para este usuario'})
     except Exception as e:
         app.logger.error(f"Error al obtener libros del usuario: {str(e)}")
         return jsonify({'message': 'Error al obtener libros del usuario'})
+
 
 
 
