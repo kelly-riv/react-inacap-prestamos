@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-07-2023 a las 20:56:53
--- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 8.1.6
+-- Tiempo de generación: 27-07-2023 a las 03:11:20
+-- Versión del servidor: 10.4.25-MariaDB
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -65,22 +65,22 @@ CREATE TABLE `libro` (
 --
 
 INSERT INTO `libro` (`id_libro`, `titulo`, `autor`, `editorial`, `ISBN`, `disponibilidad`, `condicion`, `anio_publicacion`) VALUES
-(2, 'Las aventuras de Amanda y el gato del pirata', 'Flores Guerra, Lilian', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', '978-956-09719-5-1', 1, 0, 2023),
-(3, 'Ladrido inverso', 'Azzar, Ernesto', 'Un Perro Negro SPA - Ediciones Askasis', '978-956-9455-52-0', 1, 0, 2023),
+(2, 'Las aventuras de Amanda y el gato del pirata', 'Flores Guerra, Lilian', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', '978-956-09719-5-1', 0, 0, 2023),
+(3, 'Ladrido inverso', 'Azzar, Ernesto', 'Un Perro Negro SPA - Ediciones Askasis', '978-956-9455-52-0', 0, 0, 2023),
 (4, 'El amor por los débiles & el instinto de asesinato', 'Axat, Julián', 'Un Perro Negro SPA - Ediciones Askasis', '978-956-9455-51-3', 1, 0, 2023),
-(5, 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', '978-956-14-3003-7', 1, 0, 2022),
+(5, 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', '978-956-14-3003-7', 0, 0, 2022),
 (6, 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', '978-956-09719-3-7', 1, 0, 2022),
-(7, 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', '978-956-14-3003-7', 1, 0, 2022),
+(7, 'Hijo de la guerra, hombre de paz', 'Ban, Ki-monn', 'Pontificia Universidad Católica de Chile', '978-956-14-3003-7', 0, 0, 2022),
 (8, 'Sofía y el cerro de los deseos', 'Aragón, María-José', 'Seminarios, Eventos y Publicaciones Lilian Verónica Flores Guerra EIRL - Ediciones del Gato', '978-956-09719-3-7', 1, 0, 2022),
-(9, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 1, 0, 2022),
+(9, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 0, 0, 2022),
 (10, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 1, 0, 2022),
 (11, 'Medallas y recompensas en La Guerra del Pacífico', 'Fabián Berríos', 'Inversiones Elemonkey SpA.', '978-956-6211-02-0', 1, 0, 2022),
 (12, 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', '978-956-00-1555-6', 1, 0, 2007),
 (13, 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', '978-956-00-1555-6', 1, 0, 2007),
 (14, 'Los anarquistas y el movimiento obrero', 'Grez Toso, Sergio Santiago', 'LOM Ediciones S.A.', '978-956-00-1555-6', 1, 0, 2007),
-(15, 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', '978-956-00-1536-5', 1, 0, 2007),
-(16, 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', '978-956-00-1536-5', 1, 0, 2007),
-(17, 'Refranes y + con alma', 'Gómez Alfonso, María del Rosario', 'Editorial Por Un Mundo Mejor Ltda.', '978-956-8234-14-0', 1, 0, 2007);
+(15, 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', '978-956-00-1536-5', 0, 0, 2007),
+(16, 'Nadar a oscuras', 'García-Huidobro Moroder, María Beatríz', 'LOM Ediciones S.A.', '978-956-00-1536-5', 0, 0, 2007),
+(17, 'Refranes y + con alma', 'Gómez Alfonso, María del Rosario', 'Editorial Por Un Mundo Mejor Ltda.', '978-956-8234-14-0', 0, 0, 2007);
 
 -- --------------------------------------------------------
 
@@ -99,6 +99,20 @@ CREATE TABLE `prestamo` (
   `fecha_entrega` date DEFAULT NULL,
   `entregado` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `prestamo`
+--
+
+INSERT INTO `prestamo` (`id_prestamo`, `fecha_inicio`, `fecha_termino`, `id_encargado`, `id_user`, `id_libro`, `multa_total`, `fecha_entrega`, `entregado`) VALUES
+(40, '2023-07-26', '2023-07-28', 2, 1, 2, 0, NULL, 0),
+(41, '2023-07-26', '2023-08-03', 2, 2, 17, 0, NULL, 0),
+(42, '2023-07-27', '2023-08-04', 2, 3, 5, 0, NULL, 0),
+(43, '2023-07-26', '2023-07-30', 2, 4, 7, 0, NULL, 0),
+(44, '2023-07-28', '2023-07-29', 2, 5, 15, 0, NULL, 0),
+(45, '2023-07-29', '2023-08-08', 2, 6, 16, 0, NULL, 0),
+(46, '2023-07-26', '2023-08-06', 2, 7, 3, 0, NULL, 0),
+(47, '2023-07-28', '2023-07-29', 2, 8, 9, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -241,7 +255,7 @@ ALTER TABLE `libro`
 -- AUTO_INCREMENT de la tabla `prestamo`
 --
 ALTER TABLE `prestamo`
-  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `prorroga`
