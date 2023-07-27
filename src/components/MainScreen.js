@@ -30,11 +30,12 @@ function MainScreen() {
   }, []);
 
   return (
+    <main className='principal'>
     <center>
         <Link to={"/"}>
           <button type="button" className="btn btn-secondary volver" >Cerrar Sesión</button>
         </Link>
-        <div >
+        <div className='container barra'>
           <table className='actionButtons'>
             <tbody>
               <tr>
@@ -78,11 +79,12 @@ function MainScreen() {
           </table>
         </div>
         <div className="table-responsive">
+          <br/>
         <h1>Listado de Préstamos</h1>
-          <table className="table">
+          <table className="table prestamos">
             <thead>
               <tr>
-                <th>Código préstamo</th>
+                <th>Código <br/>préstamo</th>
                 <th>Código del libro</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Término</th>
@@ -105,6 +107,7 @@ function MainScreen() {
           </table>
         </div>
       </center>
+      </main>
   );
 }
 

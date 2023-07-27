@@ -77,13 +77,14 @@ function Prorroga(props) {
   }, []);
 
   return (
-    <div>
+    <div className='principal'>
       <Link to={'/MainScreen'}>
         <Button variant="secondary" className="volver">
           Volver
         </Button>
       </Link>
       <h1>Registro de prorroga</h1>
+      <h2>Lista de préstamos elegibles</h2>
       <center>
         {errorMessage && (
           <Alert variant="danger" onClose={() => setErrorMessage(null)} dismissible>

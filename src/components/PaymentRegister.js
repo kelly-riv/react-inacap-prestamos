@@ -73,6 +73,7 @@ function PaymentRegister() {
   };
 
   return (
+    <div className='principal'>
     <center>
       <Link to={"/PaymentScreen"}>
         <button type="button" className="btn btn-secondary volver" >Volver</button>
@@ -145,6 +146,7 @@ function PaymentRegister() {
         {message}
       </div>
     </center>
+    </div>
   );
 }
 

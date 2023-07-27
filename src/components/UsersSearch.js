@@ -60,7 +60,7 @@ const UserSearch = () => {
   };
 
   return (
-    <div>
+    <div className='principal'>
       {message && <div className="mb-3">{message}</div>}
       <Link to="/MainScreen">
         <button type="button" className="btn btn-secondary volver">
@@ -68,6 +68,7 @@ const UserSearch = () => {
         </button>
       </Link>
       <center>
+        <h1>Para encontrar los datos del usuario, ingrese su RUT</h1>
         <InputGroup className="mb-3">
           <Form.Control
             name="rut"

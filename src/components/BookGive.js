@@ -32,10 +32,11 @@ const BookGive = () =>{
     }
 
     return (
-        <main>
+        <main className='principal'>
             <Link to={"/MainScreen"}>
-                <button type="button" className="btn btn-secondary">Volver</button>
+                <button type="button" className="btn btn-secondary volver">Volver</button>
             </Link>
+            <h1>Ingrese el código del libro que se devolverá:</h1> <br/><br/>
             <input
           style={inputStyle}
           type="text"
@@ -45,8 +46,8 @@ const BookGive = () =>{
           onChange={handleChange}
           aria-label="Username"
           aria-describedby="basic-addon1"
-        />
-        <button type="button" className="btn btn-secondary" onClick={handleSubmit}>Submit</button>
+        /> <br/>
+        <button type="button" className="btn btn-secondary" onClick={handleSubmit}>Devolver</button>
 
         </main>
       );
