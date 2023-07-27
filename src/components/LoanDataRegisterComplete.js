@@ -15,8 +15,6 @@ function LoanDataRegisterComplete() {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [bookCount, setBookCount] = useState(0);
-  const [idUser,setIdUser] = useState(1);
-  const [idEncargado,setIdEncargado] = useState(1);
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
   const location = useLocation();
@@ -30,11 +28,10 @@ function LoanDataRegisterComplete() {
   }, []);
 
   const handleSelect = (index, selectedOptions) => {
-    setSelectedBooks((prevSelectedBooks) => {
-      const newSelectedBooks = [...prevSelectedBooks];
-      newSelectedBooks[index] = selectedOptions;
-      return newSelectedBooks;
-    });
+    alert(selectedBooks)
+    setSelectedBooks([])
+    setSelectedBooks(selectedOptions);
+    alert(selectedBooks)
   };
   
   const handleChange = (event) => {
@@ -135,7 +132,6 @@ function LoanDataRegisterComplete() {
             className="form-select form-select-lg mb-3"
             aria-label=".form-select-lg example"
           > 
-            <option key={"Seleccione libro"} selected>Selecciona el libro</option>
             {books.map((book) => (
               <option key={book.id_libro} value={book.id_libro}>
                 {book.titulo}

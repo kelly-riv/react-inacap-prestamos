@@ -77,7 +77,7 @@ def insertar_prestamo():
     if str(id_libros) == "[]":
         return jsonify({'message': 'Error al realizar el préstamo, no se seleccionaron libros'})
 
-    libros_previos = prestamo.getLibrosEnPrestamo(id_libros[0][0], id_User)
+    libros_previos = prestamo.getLibrosEnPrestamo(id_libros[0], id_User)
     if libros_previos is not None:
         return jsonify({'message': 'Error al realizar el préstamo, este usuario ya posee este libro en préstamo'})
 
@@ -98,8 +98,11 @@ def insertar_prestamo():
 
     global rut_encargado
     id_encargado = encargado.getEncargadoId(rut_encargado)
-    for libro in id_libros:
-        for libro_id in libro:
+    for obj in id_libros:
+        for libro_id in obj:
+            if libro.getDisponibilidad(libro_id)==0:
+                return jsonify({'message': 'Libro no disponible'})
+
             agregar_prestamo = prestamo.insertarPrestamo(fecha_inicio, fecha_devolucion, id_User, id_encargado, libro_id)
             prestamo.setNoDisponible(libro_id)
             if agregar_prestamo:
